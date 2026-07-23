@@ -5,8 +5,16 @@ import { Loader2, LockKeyhole, Mail, UtensilsCrossed } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
+type LoginInputState = {
+  email: string;
+  password: string;
+};
+
 export function Login() {
-  const [input, setInput] = useState({ email: '', password: '' });
+  const [input, setInput] = useState<LoginInputState>({
+    email: '',
+    password: '',
+  });
   const [loading, setLoading] = useState<boolean>(false);
 
   const changeEventHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -15,12 +23,13 @@ export function Login() {
 
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     setLoading(true);
     setTimeout(() => setLoading(false), 2000);
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-orange-50 to-amber-50 p-4">
+    <div className="flex items-center justify-center min-h-screen bg-linear-to-br from-orange-50 to-amber-50 p-4">
       <motion.div
         initial={{ opacity: 0, y: 30, scale: 0.95 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -112,7 +121,7 @@ export function Login() {
             ) : (
               <Button
                 type="submit"
-                className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold transition-all shadow-md shadow-orange-100"
+                className="w-full cursor-pointer bg-orange-500 hover:bg-orange-600 text-white font-semibold transition-all shadow-md shadow-orange-100"
               >
                 Login
               </Button>
