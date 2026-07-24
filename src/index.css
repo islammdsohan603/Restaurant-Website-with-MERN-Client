@@ -3,6 +3,8 @@
 @import "shadcn/tailwind.css";
 @import "@fontsource-variable/geist";
 
+@import "@heroui/styles";
+
 :root {
   --button: #D19254;
   --hoverButtonsColor: #d18c47;

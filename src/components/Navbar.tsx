@@ -14,6 +14,7 @@ import {
   SquareMenu,
   ChevronDown,
   LogOut,
+  User2Icon,
 } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
@@ -25,8 +26,10 @@ import {
   DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
 
+import { Avatar } from '@heroui/react';
+
 const Navbar: React.FC = () => {
-  const [isAdmin] = useState<boolean>(true);
+  const [isAdmin] = useState<boolean>(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
   const location = useLocation();
@@ -152,12 +155,12 @@ const Navbar: React.FC = () => {
                 variant="ghost"
                 size="icon"
                 onClick={toggleTheme}
-                className="rounded-full text-gray-700 dark:text-gray-300 hover:bg-orange-50 dark:hover:bg-gray-800"
+                className="rounded-full text-gray-700 dark:text-gray-300 hover:bg-orange-50 dark:hover:bg-gray-900 cursor-pointer"
               >
                 {isDarkMode ? (
                   <Sun className="w-5 h-5 text-amber-400" />
                 ) : (
-                  <Moon className="w-5 h-5 text-gray-700" />
+                  <Moon className="w-5 h-5 text-gray-100" />
                 )}
               </Button>
             </motion.div>
@@ -168,7 +171,7 @@ const Navbar: React.FC = () => {
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="rounded-full text-gray-700 dark:text-gray-300 hover:bg-orange-50 dark:hover:bg-gray-800 relative"
+                  className="rounded-full text-gray-700 dark:text-gray-300 hover:bg-orange-50 dark:hover:bg-gray-800 relative cursor-pointer"
                 >
                   <ShoppingCart className="w-5 h-5" />
                   <span className="absolute -top-1 -right-1 bg-orange-500 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
@@ -182,12 +185,8 @@ const Navbar: React.FC = () => {
             <div className="hidden md:block">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <button className="w-9 h-9 rounded-full overflow-hidden ring-2 ring-orange-500/20 hover:ring-orange-500 transition-all focus:outline-none">
-                    <img
-                      src="https://github.com/shadcn.png"
-                      alt="User Avatar"
-                      className="w-full h-full object-cover"
-                    />
+                  <button className="w-9 h-9 flex items-center justify-center cursor-pointer rounded-full overflow-hidden ring-2 ring-orange-500/20 hover:ring-orange-500 transition-all focus:outline-none">
+                    <User2Icon className="text-gray-200" />
                   </button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
