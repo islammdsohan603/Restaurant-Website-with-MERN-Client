@@ -4,12 +4,9 @@ import { Input } from '@/components/ui/input';
 import { Loader2, LockKeyhole, Mail, UtensilsCrossed } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import type { LoginInputState } from '@/schema/userSchema';
+import { userSigninSchema, type LoginInputState } from '@/schema/userSchema';
 
-// type LoginInputState = {
-//   email: string;
-//   password: string;
-// };
+type SignupErrors = Partial<Record<keyof LoginInputState, string[]>>;
 
 export function Login() {
   const [input, setInput] = useState<LoginInputState>({
@@ -18,14 +15,30 @@ export function Login() {
   });
   const [loading, setLoading] = useState<boolean>(false);
 
+  const [errors, setErrors] = useState<SignupErrors>({});
+
   const changeEventHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    setInput({ ...input, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setInput(prev => ({ ...prev, [name]: value }));
+
+    if (errors[name as keyof LoginInputState]) {
+      setErrors(prev => ({ ...prev, [name]: undefined }));
+    }
   };
 
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // form validation check start
+    // Zod Validation Check
+    const result = userSigninSchema.safeParse(input);
+
+    if (!result.success) {
+      const fieldErrors = result.error.flatten().fieldErrors;
+      setErrors(fieldErrors);
+      return;
+    }
+
+    console.log('Login page', input);
 
     setLoading(true);
     setTimeout(() => setLoading(false), 2000);
@@ -62,10 +75,11 @@ export function Login() {
         </div>
 
         <form onSubmit={submitHandler} className="space-y-4">
+          {/* Email */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2 }}
+            transition={{ delay: 0.3 }}
           >
             <label className="text-sm font-medium text-gray-700 mb-1 block">
               Email
@@ -77,17 +91,26 @@ export function Login() {
                 value={input.email}
                 onChange={changeEventHandler}
                 placeholder="your.email@example.com"
-                className="pl-10 focus-visible:ring-orange-500"
-                required
+                className={`pl-10 focus-visible:ring-orange-500 ${
+                  errors.email
+                    ? 'border-red-500 focus-visible:ring-red-500'
+                    : ''
+                }`}
               />
               <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
             </div>
+            {errors.email && (
+              <span className="text-xs text-red-500 mt-1 block font-medium">
+                {errors.email[0]}
+              </span>
+            )}
           </motion.div>
 
+          {/* Password */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.3 }}
+            transition={{ delay: 0.4 }}
           >
             <label className="text-sm font-medium text-gray-700 mb-1 block">
               Password
@@ -99,11 +122,19 @@ export function Login() {
                 value={input.password}
                 onChange={changeEventHandler}
                 placeholder="••••••••"
-                className="pl-10 focus-visible:ring-orange-500"
-                required
+                className={`pl-10 focus-visible:ring-orange-500 ${
+                  errors.password
+                    ? 'border-red-500 focus-visible:ring-red-500'
+                    : ''
+                }`}
               />
               <LockKeyhole className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
             </div>
+            {errors.password && (
+              <span className="text-xs text-red-500 mt-1 block font-medium">
+                {errors.password[0]}
+              </span>
+            )}
           </motion.div>
 
           <motion.div
