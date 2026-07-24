@@ -11,14 +11,15 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import type { SignupState } from '@/schema/userSchema';
 
 // Form Input Type Define
-interface SignupState {
-  fullName: string;
-  email: string;
-  password: string;
-  contact: string;
-}
+// interface SignupState {
+//   fullName: string;
+//   email: string;
+//   password: string;
+//   contact: string;
+// }
 
 const Signup: React.FC = () => {
   const [input, setInput] = useState<SignupState>({
@@ -189,7 +190,7 @@ const Signup: React.FC = () => {
             ) : (
               <Button
                 type="submit"
-                className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold transition-all shadow-md shadow-orange-100"
+                className="w-full cursor-pointer bg-orange-500 hover:bg-orange-600 text-white font-semibold transition-all shadow-md shadow-orange-100"
               >
                 Signup
               </Button>

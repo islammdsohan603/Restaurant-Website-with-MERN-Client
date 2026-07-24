@@ -4,11 +4,12 @@ import { Input } from '@/components/ui/input';
 import { Loader2, LockKeyhole, Mail, UtensilsCrossed } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import type { LoginInputState } from '@/schema/userSchema';
 
-type LoginInputState = {
-  email: string;
-  password: string;
-};
+// type LoginInputState = {
+//   email: string;
+//   password: string;
+// };
 
 export function Login() {
   const [input, setInput] = useState<LoginInputState>({
