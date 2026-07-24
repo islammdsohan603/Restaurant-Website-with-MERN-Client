@@ -160,6 +160,15 @@ export function Login() {
                 Login
               </Button>
             )}
+
+            <div className="mt-4 text-center">
+              <Link
+                to={'/forgot-password'}
+                className="text-sm font-semibold text-blue-500 underline"
+              >
+                Forgot Password
+              </Link>
+            </div>
           </motion.div>
         </form>
 
