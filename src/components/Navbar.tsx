@@ -26,12 +26,10 @@ import {
   DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
 
-import { Avatar } from '@heroui/react';
-
 const Navbar: React.FC = () => {
   const [isAdmin] = useState<boolean>(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
-  const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(true); // Default dark matching hero
   const location = useLocation();
 
   // Dark / Light Mode Toggle Effect
@@ -50,7 +48,7 @@ const Navbar: React.FC = () => {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <header className="sticky top-0 z-50 w-full backdrop-blur-md bg-white/90 dark:bg-gray-900/90 border-b border-gray-100 dark:border-gray-800 transition-colors duration-300">
+    <header className="sticky top-0 z-50 w-full backdrop-blur-md bg-white/90 dark:bg-[#070a10]/90 border-b border-gray-100 dark:border-gray-800/50 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo Section */}
@@ -155,12 +153,12 @@ const Navbar: React.FC = () => {
                 variant="ghost"
                 size="icon"
                 onClick={toggleTheme}
-                className="rounded-full text-gray-700 dark:text-gray-300 hover:bg-orange-50 dark:hover:bg-gray-900 cursor-pointer"
+                className="rounded-full text-gray-700 dark:text-gray-300 hover:bg-orange-50 dark:hover:bg-gray-800 cursor-pointer"
               >
                 {isDarkMode ? (
                   <Sun className="w-5 h-5 text-amber-400" />
                 ) : (
-                  <Moon className="w-5 h-5 text-gray-100" />
+                  <Moon className="w-5 h-5 text-gray-700 dark:text-gray-100" />
                 )}
               </Button>
             </motion.div>
@@ -181,12 +179,12 @@ const Navbar: React.FC = () => {
               </motion.div>
             </Link>
 
-            {/* Desktop Profile Avatar Menu (Pure HTML/Tailwind) */}
+            {/* Desktop Profile Avatar Menu */}
             <div className="hidden md:block">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <button className="w-9 h-9 flex items-center justify-center cursor-pointer rounded-full overflow-hidden ring-2 ring-orange-500/20 hover:ring-orange-500 transition-all focus:outline-none">
-                    <User2Icon className="text-gray-200" />
+                  <button className="w-9 h-9 flex items-center justify-center cursor-pointer rounded-full overflow-hidden ring-2 ring-orange-500/20 hover:ring-orange-500 transition-all focus:outline-none bg-gray-800">
+                    <User2Icon className="text-gray-200 w-5 h-5" />
                   </button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
@@ -236,7 +234,7 @@ const Navbar: React.FC = () => {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3, ease: 'easeInOut' }}
-            className="md:hidden border-b border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 overflow-hidden"
+            className="md:hidden border-b border-gray-100 dark:border-gray-800 bg-white dark:bg-[#070a10] overflow-hidden"
           >
             <div className="px-4 pt-3 pb-6 space-y-3">
               <Link
@@ -273,7 +271,7 @@ const Navbar: React.FC = () => {
                       onClick={() => setIsMobileMenuOpen(false)}
                       className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 dark:text-gray-300 hover:bg-orange-50 dark:hover:bg-gray-800"
                     >
-                      <Building2 className="w-4 h-4 text-orange-500" />{' '}
+                      <Building2 className="w-4 h-4 text-orange-500" />
                       Restaurant
                     </Link>
                     <Link
@@ -288,7 +286,7 @@ const Navbar: React.FC = () => {
                       onClick={() => setIsMobileMenuOpen(false)}
                       className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 dark:text-gray-300 hover:bg-orange-50 dark:hover:bg-gray-800"
                     >
-                      <PackageCheck className="w-4 h-4 text-orange-500" />{' '}
+                      <PackageCheck className="w-4 h-4 text-orange-500" />
                       Orders
                     </Link>
                   </div>
@@ -298,12 +296,8 @@ const Navbar: React.FC = () => {
               {/* Mobile Profile & Logout */}
               <div className="pt-3 border-t border-gray-100 dark:border-gray-800 flex items-center justify-between">
                 <div className="flex items-center gap-3 px-3">
-                  <div className="w-8 h-8 rounded-full overflow-hidden">
-                    <img
-                      src="https://github.com/shadcn.png"
-                      alt="User Avatar"
-                      className="w-full h-full object-cover"
-                    />
+                  <div className="w-8 h-8 rounded-full overflow-hidden bg-gray-800 flex items-center justify-center">
+                    <User2Icon className="w-4 h-4 text-gray-200" />
                   </div>
                   <span className="text-sm font-medium text-gray-800 dark:text-gray-200">
                     User Account
