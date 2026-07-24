@@ -11,15 +11,9 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import type { SignupState } from '@/schema/userSchema';
+import { userSignupSchema, type SignupState } from '@/schema/userSchema';
 
-// Form Input Type Define
-// interface SignupState {
-//   fullName: string;
-//   email: string;
-//   password: string;
-//   contact: string;
-// }
+type SignupErrors = Partial<Record<keyof SignupState, string[]>>;
 
 const Signup: React.FC = () => {
   const [input, setInput] = useState<SignupState>({
@@ -28,14 +22,32 @@ const Signup: React.FC = () => {
     password: '',
     contact: '',
   });
+
   const [loading, setLoading] = useState<boolean>(false);
+  const [errors, setErrors] = useState<SignupErrors>({});
 
   const changeEventHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    setInput({ ...input, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setInput(prev => ({ ...prev, [name]: value }));
+
+    if (errors[name as keyof SignupState]) {
+      setErrors(prev => ({ ...prev, [name]: undefined }));
+    }
   };
 
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setErrors({});
+
+    // Zod Validation Check
+    const result = userSignupSchema.safeParse(input);
+
+    if (!result.success) {
+      const fieldErrors = result.error.flatten().fieldErrors;
+      setErrors(fieldErrors);
+      return;
+    }
+
     setLoading(true);
     console.log('Form Submitted Data:', input);
 
@@ -77,8 +89,8 @@ const Signup: React.FC = () => {
           </p>
         </div>
 
-        {/* Form */}
-        <form onSubmit={submitHandler} className="space-y-4">
+        {/* Form - noValidate*/}
+        <form onSubmit={submitHandler} noValidate className="space-y-4">
           {/* Full Name */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -95,11 +107,19 @@ const Signup: React.FC = () => {
                 value={input.fullName}
                 onChange={changeEventHandler}
                 placeholder="John Doe"
-                className="pl-10 focus-visible:ring-orange-500"
-                required
+                className={`pl-10 focus-visible:ring-orange-500 ${
+                  errors.fullName
+                    ? 'border-red-500 focus-visible:ring-red-500'
+                    : ''
+                }`}
               />
               <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
             </div>
+            {errors.fullName && (
+              <span className="text-xs text-red-500 mt-1 block font-medium">
+                {errors.fullName[0]}
+              </span>
+            )}
           </motion.div>
 
           {/* Email */}
@@ -118,11 +138,19 @@ const Signup: React.FC = () => {
                 value={input.email}
                 onChange={changeEventHandler}
                 placeholder="your.email@example.com"
-                className="pl-10 focus-visible:ring-orange-500"
-                required
+                className={`pl-10 focus-visible:ring-orange-500 ${
+                  errors.email
+                    ? 'border-red-500 focus-visible:ring-red-500'
+                    : ''
+                }`}
               />
               <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
             </div>
+            {errors.email && (
+              <span className="text-xs text-red-500 mt-1 block font-medium">
+                {errors.email[0]}
+              </span>
+            )}
           </motion.div>
 
           {/* Password */}
@@ -141,11 +169,19 @@ const Signup: React.FC = () => {
                 value={input.password}
                 onChange={changeEventHandler}
                 placeholder="••••••••"
-                className="pl-10 focus-visible:ring-orange-500"
-                required
+                className={`pl-10 focus-visible:ring-orange-500 ${
+                  errors.password
+                    ? 'border-red-500 focus-visible:ring-red-500'
+                    : ''
+                }`}
               />
               <LockKeyhole className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
             </div>
+            {errors.password && (
+              <span className="text-xs text-red-500 mt-1 block font-medium">
+                {errors.password[0]}
+              </span>
+            )}
           </motion.div>
 
           {/* Contact */}
@@ -159,16 +195,24 @@ const Signup: React.FC = () => {
             </label>
             <div className="relative">
               <Input
-                type="text"
+                type="number"
                 name="contact"
                 value={input.contact}
                 onChange={changeEventHandler}
-                placeholder="+880 1700000000"
-                className="pl-10 focus-visible:ring-orange-500"
-                required
+                placeholder="+8801700000000"
+                className={`pl-10 focus-visible:ring-orange-500 ${
+                  errors.contact
+                    ? 'border-red-500 focus-visible:ring-red-500'
+                    : ''
+                }`}
               />
               <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
             </div>
+            {errors.contact && (
+              <span className="text-xs text-red-500 mt-1 block font-medium">
+                {errors.contact[0]}
+              </span>
+            )}
           </motion.div>
 
           {/* Submit Button */}

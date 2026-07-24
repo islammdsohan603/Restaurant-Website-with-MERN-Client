@@ -25,6 +25,8 @@ export function Login() {
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    // form validation check start
+
     setLoading(true);
     setTimeout(() => setLoading(false), 2000);
   };
