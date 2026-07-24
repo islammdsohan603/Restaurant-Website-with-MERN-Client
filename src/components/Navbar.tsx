@@ -29,10 +29,24 @@ import {
 const Navbar: React.FC = () => {
   const [isAdmin] = useState<boolean>(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
-  const [isDarkMode, setIsDarkMode] = useState<boolean>(true); // Default dark matching hero
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(true);
+  const [isScrolled, setIsScrolled] = useState<boolean>(false);
   const location = useLocation();
 
-  // Dark / Light Mode Toggle Effect
+  // Scroll detection for navbar animation
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 20) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   useEffect(() => {
     if (isDarkMode) {
       document.documentElement.classList.add('dark');
@@ -44,13 +58,18 @@ const Navbar: React.FC = () => {
   const toggleTheme = () => setIsDarkMode(prev => !prev);
   const toggleMobileMenu = () => setIsMobileMenuOpen(prev => !prev);
 
-  // Active Link Helper
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <header className="sticky top-0 z-50 w-full backdrop-blur-md bg-white/90 dark:bg-[#070a10]/90 border-b border-gray-100 dark:border-gray-800/50 transition-colors duration-300">
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 ease-in-out ${
+        isScrolled
+          ? 'py-2.5 bg-white/80 dark:bg-[#070a10]/85 backdrop-blur-md shadow-lg border-b border-gray-200/50 dark:border-gray-800/60'
+          : 'py-4 bg-white dark:bg-[#070a10] border-b border-transparent'
+      }`}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between">
           {/* Logo Section */}
           <Link to="/" className="flex items-center gap-2 group">
             <motion.div
@@ -163,7 +182,7 @@ const Navbar: React.FC = () => {
               </Button>
             </motion.div>
 
-            {/* Cart Icon with Badge */}
+            {/* Cart Icon */}
             <Link to="/cart" className="relative">
               <motion.div whileTap={{ scale: 0.9 }}>
                 <Button
@@ -179,7 +198,7 @@ const Navbar: React.FC = () => {
               </motion.div>
             </Link>
 
-            {/* Desktop Profile Avatar Menu */}
+            {/* Desktop Profile Avatar */}
             <div className="hidden md:block">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -207,7 +226,7 @@ const Navbar: React.FC = () => {
               </DropdownMenu>
             </div>
 
-            {/* Mobile Hamburger Button */}
+            {/* Mobile Menu Button */}
             <div className="md:hidden">
               <Button
                 variant="ghost"
@@ -226,17 +245,17 @@ const Navbar: React.FC = () => {
         </div>
       </div>
 
-      {/* Animated Mobile Dropdown Menu */}
+      {/* Mobile Navigation Menu */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3, ease: 'easeInOut' }}
+            transition={{ duration: 0.25 }}
             className="md:hidden border-b border-gray-100 dark:border-gray-800 bg-white dark:bg-[#070a10] overflow-hidden"
           >
-            <div className="px-4 pt-3 pb-6 space-y-3">
+            <div className="px-4 pt-3 pb-6 space-y-3 max-w-7xl mx-auto">
               <Link
                 to="/"
                 onClick={() => setIsMobileMenuOpen(false)}
@@ -259,7 +278,6 @@ const Navbar: React.FC = () => {
                 Orders
               </Link>
 
-              {/* Admin Menu Links for Mobile */}
               {isAdmin && (
                 <div className="pt-2 border-t border-gray-100 dark:border-gray-800">
                   <span className="text-xs font-semibold text-gray-400 px-3 uppercase tracking-wider">
@@ -286,14 +304,13 @@ const Navbar: React.FC = () => {
                       onClick={() => setIsMobileMenuOpen(false)}
                       className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 dark:text-gray-300 hover:bg-orange-50 dark:hover:bg-gray-800"
                     >
-                      <PackageCheck className="w-4 h-4 text-orange-500" />
+                      <PackageCheck className="w-4 h-4 text-orange-500" />{' '}
                       Orders
                     </Link>
                   </div>
                 </div>
               )}
 
-              {/* Mobile Profile & Logout */}
               <div className="pt-3 border-t border-gray-100 dark:border-gray-800 flex items-center justify-between">
                 <div className="flex items-center gap-3 px-3">
                   <div className="w-8 h-8 rounded-full overflow-hidden bg-gray-800 flex items-center justify-center">
