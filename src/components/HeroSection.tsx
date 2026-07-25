@@ -11,7 +11,7 @@ const HeroSection: React.FC = () => {
     if (searchQuery.trim()) {
       navigate(`/search/${encodeURIComponent(searchQuery.trim())}`);
     } else {
-      navigate('/search/all');
+      navigate('/search');
     }
   };
 
