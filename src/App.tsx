@@ -11,6 +11,8 @@ import HeroSection from './components/HeroSection';
 import MainLayout from './layout/MainLayout';
 import Profile from './components/Profile';
 
+import SearchPage from './components/SearchPage';
+
 const appRouter = createBrowserRouter([
   {
     path: '/',
@@ -18,6 +20,7 @@ const appRouter = createBrowserRouter([
     children: [
       { path: '/', element: <HeroSection /> },
       { path: '/profile', element: <Profile /> },
+      { path: '/search', element: <SearchPage /> },
     ],
   },
   {

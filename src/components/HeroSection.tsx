@@ -1,19 +1,24 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Search } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const HeroSection: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const navigate = useNavigate();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Searching for:', searchQuery);
+    if (searchQuery.trim()) {
+      navigate(`/search/${encodeURIComponent(searchQuery.trim())}`);
+    } else {
+      navigate('/search/all');
+    }
   };
 
   return (
-    <section className="relative w-full min-h-[calc(100vh-4rem)] bg-[#070a10] text-white flex items-center justify-center overflow-hidden px-4 sm:px-6 lg:px-8 py-12 lg:py-0">
+    <section className="relative w-full min-h-[calc(100vh-5rem)] bg-[#070a10] text-white flex items-center justify-center overflow-hidden px-4 sm:px-6 lg:px-8 py-12 lg:py-0">
       <div className="max-w-7xl w-full mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center">
-        {/* Left Section: Text & Search Form (Enters from Left) */}
+        {/* Left Section: Text & Search Form */}
         <motion.div
           initial={{ opacity: 0, x: -100 }}
           animate={{ opacity: 1, x: 0 }}
@@ -23,7 +28,7 @@ const HeroSection: React.FC = () => {
           {/* Headline */}
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight text-white">
             Order Food anytime <br className="hidden sm:block" />
-            <span className="text-white">&amp; anywhere</span>
+            <span className="text-orange-500">&amp; anywhere</span>
           </h1>
 
           {/* Subtitle */}
@@ -46,37 +51,28 @@ const HeroSection: React.FC = () => {
             />
             <button
               type="submit"
-              className="bg-[#d9823b] hover:bg-[#c4712b] text-white font-semibold px-6 py-2.5 rounded-lg text-sm md:text-base transition-all duration-300 cursor-pointer shadow-md whitespace-nowrap active:scale-95"
+              className="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-6 py-2.5 rounded-lg text-sm md:text-base transition-all duration-300 cursor-pointer shadow-md whitespace-nowrap active:scale-95"
             >
               Search
             </button>
           </form>
         </motion.div>
 
-        {/* Right Section: Pizza Image (Enters from Right & Continuous Floating Animation) */}
+        {/* Right Section: Pizza Image */}
         <motion.div
           initial={{ opacity: 0, x: 100 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, ease: 'easeOut' }}
           className="flex items-center justify-center relative w-full"
         >
-          {/* Always Animating Pizza Wrapper */}
           <motion.div
             animate={{
-              y: [0, -15, 0], // উপরে-নিচে হালকা ভেসে থাকার এনিমেশন
-              rotate: [0, 360], // সার্বক্ষণিক ধীরে ধীরে ঘোরা
+              y: [0, -15, 0],
+              rotate: [0, 360],
             }}
             transition={{
-              y: {
-                duration: 4,
-                repeat: Infinity,
-                ease: 'easeInOut',
-              },
-              rotate: {
-                duration: 50, // ৫০ সেকেন্ডে এক বার সম্পূর্ণ ঘুরবে (খুবই স্মুথ)
-                repeat: Infinity,
-                ease: 'linear',
-              },
+              y: { duration: 4, repeat: Infinity, ease: 'easeInOut' },
+              rotate: { duration: 50, repeat: Infinity, ease: 'linear' },
             }}
             className="relative w-full max-w-sm sm:max-w-md lg:max-w-lg flex items-center justify-center"
           >
