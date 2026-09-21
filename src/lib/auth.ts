@@ -34,6 +34,7 @@ export interface AuthUser {
   phone: string;
   address: string;
   currentAddress: string;
+  createdAt?: string;
 }
 
 export const saveUser = (user: AuthUser): void => {
@@ -55,7 +56,7 @@ export const getUser = (): AuthUser | null => {
 
 // ─── API Base URL ─────────────────────────────────────────────────────────────
 
-const API_BASE = "http://localhost:5000/api";
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 // ─── API Helpers ──────────────────────────────────────────────────────────────
 
@@ -72,6 +73,11 @@ export interface ApiResponse<T = unknown> {
   errors?: ApiError[];
   data?: T;
 }
+
+const authHeaders = (): HeadersInit => ({
+  "Content-Type": "application/json",
+  Authorization: `Bearer ${getToken() ?? ""}`,
+});
 
 export const signupUser = async (payload: {
   name: string;
@@ -101,3 +107,29 @@ export const loginUser = async (payload: {
   });
   return res.json() as Promise<ApiResponse>;
 };
+
+export const fetchProfile = async (): Promise<ApiResponse> => {
+  const res = await fetch(`${API_BASE}/auth/profile`, {
+    method: "GET",
+    headers: authHeaders(),
+  });
+  return res.json() as Promise<ApiResponse>;
+};
+
+export const updateProfile = async (payload: {
+  name?: string;
+  phone?: string;
+  address?: string;
+  currentAddress?: string;
+  currentPassword?: string;
+  newPassword?: string;
+  confirmNewPassword?: string;
+}): Promise<ApiResponse> => {
+  const res = await fetch(`${API_BASE}/auth/profile`, {
+    method: "PUT",
+    headers: authHeaders(),
+    body: JSON.stringify(payload),
+  });
+  return res.json() as Promise<ApiResponse>;
+};
+
