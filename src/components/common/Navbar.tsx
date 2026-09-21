@@ -121,14 +121,15 @@ export default function Navbar() {
                   </div>
                 </div>
                 {/* Actions */}
-                <button
-                  type="button"
-                  className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-[#1E232A] hover:bg-[#E8E2D5]/40 hover:text-[#D35400] transition-colors"
-                  onClick={() => { setIsUserMenuOpen(false); }}
+                <Link
+                  href="/profile"
+                  id="navbar-profile-link"
+                  onClick={() => setIsUserMenuOpen(false)}
+                  className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-[#1E232A] hover:bg-[#E8E2D5]/40 hover:text-[#D35400] transition-colors"
                 >
                   <UserCircle className="w-4 h-4" />
                   My Profile
-                </button>
+                </Link>
                 <button
                   type="button"
                   id="navbar-logout-btn"
@@ -256,17 +257,17 @@ export default function Navbar() {
 
             {/* User Profile Button (mobile) */}
             {loggedIn ? (
-              <button
-                type="button"
-                id="navbar-mobile-user-btn"
-                aria-label="Account"
-                onClick={handleLogout}
-                className="p-2 cursor-pointer rounded-full border border-[#D35400]/40 bg-[#D35400]/5 text-[#D35400] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D35400]"
-              >
-                <div className="w-4 h-4 flex items-center justify-center text-[10px] font-bold leading-none">
-                  {user?.name?.charAt(0).toUpperCase() ?? 'U'}
-                </div>
-              </button>
+              <Link href="/profile" id="navbar-mobile-user-btn">
+                <button
+                  type="button"
+                  aria-label="My Profile"
+                  className="p-2 cursor-pointer rounded-full border border-[#D35400]/40 bg-[#D35400]/5 text-[#D35400] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D35400]"
+                >
+                  <div className="w-4 h-4 flex items-center justify-center text-[10px] font-bold leading-none">
+                    {user?.name?.charAt(0).toUpperCase() ?? 'U'}
+                  </div>
+                </button>
+              </Link>
             ) : (
               <Link href="/login" id="navbar-mobile-login-link">
                 <button
@@ -335,24 +336,34 @@ export default function Navbar() {
             <div className="pt-4 border-t border-[#E8E2D5] flex flex-col space-y-3">
               {/* Auth row in mobile drawer */}
               {loggedIn ? (
-                <div className="min-h-[48px] px-4 rounded-xl border border-[#E8E2D5] bg-white/50 flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-[#D35400] text-white flex items-center justify-center text-sm font-bold">
-                      {user?.name?.charAt(0).toUpperCase() ?? 'U'}
+                <div className="rounded-xl border border-[#E8E2D5] bg-white/50 overflow-hidden">
+                  <div className="px-4 py-3 flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-full bg-[#D35400] text-white flex items-center justify-center text-sm font-bold shrink-0">
+                        {user?.name?.charAt(0).toUpperCase() ?? 'U'}
+                      </div>
+                      <div className="flex flex-col min-w-0">
+                        <span className="text-sm font-semibold text-[#1E232A] truncate">{user?.name}</span>
+                        <span className="text-xs text-[#4A5568] truncate">{user?.email}</span>
+                      </div>
                     </div>
-                    <div className="flex flex-col">
-                      <span className="text-sm font-semibold text-[#1E232A]">{user?.name}</span>
-                      <span className="text-xs text-[#4A5568]">{user?.email}</span>
-                    </div>
+                    <button
+                      type="button"
+                      onClick={handleLogout}
+                      className="flex items-center gap-1.5 text-xs font-semibold text-red-600 bg-red-50 px-2.5 py-1 rounded-full shrink-0"
+                    >
+                      <LogOut className="w-3.5 h-3.5" />
+                      Sign Out
+                    </button>
                   </div>
-                  <button
-                    type="button"
-                    onClick={handleLogout}
-                    className="flex items-center gap-1.5 text-xs font-semibold text-red-600 bg-red-50 px-2.5 py-1 rounded-full"
+                  <Link
+                    href="/profile"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="flex items-center gap-2 px-4 py-2.5 border-t border-[#E8E2D5] text-sm font-semibold text-[#D35400] hover:bg-[#D35400]/5 transition-colors"
                   >
-                    <LogOut className="w-3.5 h-3.5" />
-                    Sign Out
-                  </button>
+                    <UserCircle className="w-4 h-4" />
+                    View My Profile
+                  </Link>
                 </div>
               ) : (
                 <div className="flex gap-2">
