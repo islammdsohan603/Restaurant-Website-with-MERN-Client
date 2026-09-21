@@ -2,7 +2,9 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Leaf, Phone, User, Menu, X, ChevronRight, Calendar } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { Leaf, Phone, User, Menu, X, ChevronRight, Calendar, LogOut, UserCircle } from 'lucide-react';
+import { isLoggedIn, getUser, removeToken, type AuthUser } from '@/lib/auth';
 
 export interface NavItem {
   name: string;
@@ -17,43 +19,153 @@ const NAV_ITEMS: NavItem[] = [
 ];
 
 export default function Navbar() {
+  const router = useRouter();
+
   const [activeTab, setActiveTab] = useState<string>('Our Menu');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState<boolean>(false);
 
-  // Handle scroll detection for dynamic shadow/glassmorphism effect
+  // Auth state — read from localStorage (client-only)
+  const [loggedIn, setLoggedIn] = useState<boolean>(false);
+  const [user, setUser] = useState<AuthUser | null>(null);
+
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
-    };
+    setLoggedIn(isLoggedIn());
+    setUser(getUser());
+  }, []);
 
+  // Handle scroll detection
+  useEffect(() => {
+    const handleScroll = () => setIsScrolled(window.scrollY > 10);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Handle Escape key press to close mobile drawer
+  // Handle Escape key
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && isMobileMenuOpen) {
+      if (e.key === 'Escape') {
         setIsMobileMenuOpen(false);
+        setIsUserMenuOpen(false);
       }
     };
-
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isMobileMenuOpen]);
+  }, []);
 
   // Prevent background scrolling when mobile menu is open
   useEffect(() => {
-    if (isMobileMenuOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-    return () => {
-      document.body.style.overflow = '';
-    };
+    document.body.style.overflow = isMobileMenuOpen ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
   }, [isMobileMenuOpen]);
+
+  const handleLogout = () => {
+    removeToken();
+    setLoggedIn(false);
+    setUser(null);
+    setIsUserMenuOpen(false);
+    router.push('/login');
+  };
+
+  // ── User Dropdown (desktop) ────────────────────────────────────────────────
+  const UserDropdown = () => (
+    <div className="relative">
+      <button
+        type="button"
+        id="navbar-user-btn"
+        onClick={() => setIsUserMenuOpen((v) => !v)}
+        aria-label={loggedIn ? `Account menu for ${user?.name ?? 'user'}` : 'Sign in or create account'}
+        aria-expanded={isUserMenuOpen}
+        className={`flex items-center gap-2 p-2 rounded-full border transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D35400] active:scale-95
+          ${loggedIn
+            ? 'border-[#D35400]/40 bg-[#D35400]/5 text-[#D35400] hover:bg-[#D35400]/10'
+            : 'border-[#E8E2D5] text-[#1E232A] hover:border-[#D35400] hover:text-[#D35400] hover:bg-[#E8E2D5]/30'
+          }`}
+      >
+        {loggedIn ? (
+          <>
+            <div className="w-6 h-6 rounded-full bg-[#D35400] text-white flex items-center justify-center text-xs font-bold leading-none">
+              {user?.name?.charAt(0).toUpperCase() ?? 'U'}
+            </div>
+            <span className="text-xs font-semibold pr-1 hidden xl:block max-w-[80px] truncate">
+              {user?.name?.split(' ')[0] ?? 'Account'}
+            </span>
+          </>
+        ) : (
+          <User className="w-4 font-normal" />
+        )}
+      </button>
+
+      {/* Dropdown menu */}
+      {isUserMenuOpen && (
+        <>
+          {/* Backdrop */}
+          <div
+            className="fixed inset-0 z-40"
+            onClick={() => setIsUserMenuOpen(false)}
+          />
+          <div className="absolute right-0 top-full mt-2 w-56 bg-white border border-[#E8E2D5] rounded-2xl shadow-xl z-50 overflow-hidden py-1.5 animate-in fade-in slide-in-from-top-1 duration-150">
+            {loggedIn ? (
+              <>
+                {/* User info */}
+                <div className="px-4 py-3 border-b border-[#E8E2D5]">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-8 h-8 rounded-full bg-[#D35400] text-white flex items-center justify-center text-sm font-bold">
+                      {user?.name?.charAt(0).toUpperCase() ?? 'U'}
+                    </div>
+                    <div className="flex flex-col min-w-0">
+                      <span className="text-sm font-semibold text-[#1E232A] truncate">{user?.name}</span>
+                      <span className="text-xs text-[#4A5568] truncate">{user?.email}</span>
+                    </div>
+                  </div>
+                </div>
+                {/* Actions */}
+                <button
+                  type="button"
+                  className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-[#1E232A] hover:bg-[#E8E2D5]/40 hover:text-[#D35400] transition-colors"
+                  onClick={() => { setIsUserMenuOpen(false); }}
+                >
+                  <UserCircle className="w-4 h-4" />
+                  My Profile
+                </button>
+                <button
+                  type="button"
+                  id="navbar-logout-btn"
+                  onClick={handleLogout}
+                  className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors"
+                >
+                  <LogOut className="w-4 h-4" />
+                  Sign Out
+                </button>
+              </>
+            ) : (
+              <>
+                <Link
+                  href="/login"
+                  id="navbar-login-link"
+                  onClick={() => setIsUserMenuOpen(false)}
+                  className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-[#1E232A] hover:bg-[#E8E2D5]/40 hover:text-[#D35400] transition-colors"
+                >
+                  <User className="w-4 h-4" />
+                  Sign In
+                </Link>
+                <Link
+                  href="/signup"
+                  id="navbar-signup-link"
+                  onClick={() => setIsUserMenuOpen(false)}
+                  className="flex items-center gap-2.5 px-4 py-2.5 text-sm font-semibold text-[#D35400] hover:bg-[#D35400]/5 transition-colors"
+                >
+                  <UserCircle className="w-4 h-4" />
+                  Create Account
+                </Link>
+              </>
+            )}
+          </div>
+        </>
+      )}
+    </div>
+  );
 
   return (
     <header
@@ -127,14 +239,8 @@ export default function Navbar() {
               Book Table
             </a>
 
-            {/* User Profile Icon */}
-            <button
-              type="button"
-              aria-label="User Profile and Account Settings"
-              className="p-2 rounded-full border border-[#E8E2D5] text-[#1E232A] hover:border-[#D35400] hover:text-[#D35400] hover:bg-[#E8E2D5]/30 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D35400] active:scale-95"
-            >
-              <User className="w-4 font-normal" />
-            </button>
+            {/* User Profile Dropdown */}
+            <UserDropdown />
           </div>
 
           {/* Mobile & Tablet Header Action Buttons (Right) */}
@@ -148,14 +254,30 @@ export default function Navbar() {
               <span>Book</span>
             </a>
 
-            {/* User Profile Button shortcut */}
-            <button
-              type="button"
-              aria-label="User Profile"
-              className="p-2 rounded-full border border-[#E8E2D5] text-[#1E232A] hover:border-[#D35400] hover:text-[#D35400] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D35400]"
-            >
-              <User className="w-4 h-4" />
-            </button>
+            {/* User Profile Button (mobile) */}
+            {loggedIn ? (
+              <button
+                type="button"
+                id="navbar-mobile-user-btn"
+                aria-label="Account"
+                onClick={handleLogout}
+                className="p-2 cursor-pointer rounded-full border border-[#D35400]/40 bg-[#D35400]/5 text-[#D35400] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D35400]"
+              >
+                <div className="w-4 h-4 flex items-center justify-center text-[10px] font-bold leading-none">
+                  {user?.name?.charAt(0).toUpperCase() ?? 'U'}
+                </div>
+              </button>
+            ) : (
+              <Link href="/login" id="navbar-mobile-login-link">
+                <button
+                  type="button"
+                  aria-label="User Profile"
+                  className="p-2 cursor-pointer rounded-full border border-[#E8E2D5] text-[#1E232A] hover:border-[#D35400] hover:text-[#D35400] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D35400]"
+                >
+                  <User className="w-4 h-4" />
+                </button>
+              </Link>
+            )}
 
             {/* Animated Hamburger / Close Menu Button */}
             <button
@@ -203,9 +325,7 @@ export default function Navbar() {
                   >
                     <span>{item.name}</span>
                     <ChevronRight
-                      className={`w-4 h-4 ${
-                        isActive ? 'text-white' : 'text-[#4A5568]'
-                      }`}
+                      className={`w-4 h-4 ${isActive ? 'text-white' : 'text-[#4A5568]'}`}
                     />
                   </a>
                 );
@@ -213,6 +333,46 @@ export default function Navbar() {
             </nav>
 
             <div className="pt-4 border-t border-[#E8E2D5] flex flex-col space-y-3">
+              {/* Auth row in mobile drawer */}
+              {loggedIn ? (
+                <div className="min-h-[48px] px-4 rounded-xl border border-[#E8E2D5] bg-white/50 flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-[#D35400] text-white flex items-center justify-center text-sm font-bold">
+                      {user?.name?.charAt(0).toUpperCase() ?? 'U'}
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="text-sm font-semibold text-[#1E232A]">{user?.name}</span>
+                      <span className="text-xs text-[#4A5568]">{user?.email}</span>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handleLogout}
+                    className="flex items-center gap-1.5 text-xs font-semibold text-red-600 bg-red-50 px-2.5 py-1 rounded-full"
+                  >
+                    <LogOut className="w-3.5 h-3.5" />
+                    Sign Out
+                  </button>
+                </div>
+              ) : (
+                <div className="flex gap-2">
+                  <Link
+                    href="/login"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="flex-1 min-h-[48px] flex items-center justify-center border border-[#E8E2D5] hover:border-[#D35400] text-[#1E232A] hover:text-[#D35400] rounded-xl text-sm font-semibold transition-all"
+                  >
+                    Sign In
+                  </Link>
+                  <Link
+                    href="/signup"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="flex-1 min-h-[48px] flex items-center justify-center bg-[#D35400] hover:bg-[#B94600] text-white rounded-xl text-sm font-semibold shadow-sm transition-all"
+                  >
+                    Create Account
+                  </Link>
+                </div>
+              )}
+
               {/* Direct Phone Link Card */}
               <a
                 href="tel:0298765432"
