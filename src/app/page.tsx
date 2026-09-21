@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <div className="min-h-screen flex flex-col bg-[#FDFBF7] text-[#1E232A]">
       {/* Sticky Glassmorphic Navbar */}
-      <Navbar />
+    
 
       {/* Hero Showcase Section */}
       <main className="flex-1">
