@@ -5,18 +5,13 @@ import { motion } from "framer-motion";
 
 export default function Heropage() {
 return (
-    <div className="h-screen flex flex-col bg-[#FDFBF7] text-[#1E232A]">
+    <div className="min-h-screen flex flex-col bg-[#FDFBF7] text-[#1E232A]">
       {/* Sticky Glassmorphic Navbar */}
     
 
       {/* Hero Showcase Section */}
-      <main className="flex-1 flex items-center justify-center">
-        <motion.section 
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
-          className="relative w-full overflow-hidden px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto"
-        >
+      <main className="flex-1">
+        <section className="relative overflow-hidden pt-12 pb-20 lg:pt-20 lg:pb-32 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             {/* Left Content */}
             <div className="flex flex-col space-y-6 text-left">
@@ -80,7 +75,7 @@ return (
                   transition={{ repeat: Infinity, duration: 5, ease: "easeInOut" }}
                   src="https://www.themealdb.com/images/media/meals/qrqywr1503066605.jpg"
                   alt="Saffron & Herbs Signature Dish"
-                  className="w-64 h-64 sm:w-80 sm:h-80 object-cover rounded-full shadow-[0_20px_50px_rgba(211,84,0,0.3)] border-[8px] border-white/90"
+                  className="w-72 h-72 sm:w-80 sm:h-80 md:w-96 md:h-96 lg:w-[30rem] lg:h-[30rem] object-cover rounded-full shadow-[0_20px_50px_rgba(211,84,0,0.3)] border-[8px] border-white/90"
                 />
               </motion.div>
 
@@ -115,7 +110,7 @@ return (
               </div>
             </div>
           </div>
-        </motion.section>
+        </section>
 
       </main>
     </div>
