@@ -54,7 +54,14 @@ export default function SignUpPage() {
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      const { name, value } = e.target;
+      const { name } = e.target;
+      let { value } = e.target;
+
+      if (name === 'phone') {
+        // Enforce numbers only and maximum 11 digits
+        value = value.replace(/\D/g, '').slice(0, 11);
+      }
+
       setForm((prev) => ({ ...prev, [name]: value }));
       // Clear field error on change
       if (errors[name]) {
@@ -72,8 +79,12 @@ export default function SignUpPage() {
       errs.name = 'Name must be at least 2 characters';
     if (!form.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
       errs.email = 'Please enter a valid email address';
-    if (!form.phone.trim() || form.phone.replace(/\D/g, '').length < 10)
-      errs.phone = 'Phone must be at least 10 digits';
+    if (!form.phone.trim())
+      errs.phone = 'Phone number is required';
+    else if (!/^\d+$/.test(form.phone))
+      errs.phone = 'Phone number can only contain numbers';
+    else if (form.phone.length < 8 || form.phone.length > 11)
+      errs.phone = 'Phone number must be a minimum of 8 digits and a maximum of 11 digits';
     if (!form.address.trim() || form.address.trim().length < 5)
       errs.address = 'Address must be at least 5 characters';
     if (!form.currentAddress.trim() || form.currentAddress.trim().length < 5)
@@ -103,6 +114,8 @@ export default function SignUpPage() {
     setIsLoading(true);
     try {
       const res = await signupUser(form);
+
+      console.log(form)
 
       if (!res.success) {
         const fieldErrs: FieldErrors = {};
@@ -153,12 +166,17 @@ export default function SignUpPage() {
     placeholder: string,
     Icon: React.ElementType,
     type: string = 'text',
-    extra?: React.ReactNode
+    extra?: React.ReactNode,
+    inputProps?: React.InputHTMLAttributes<HTMLInputElement>,
+    hint?: string
   ) => (
     <div className="flex flex-col gap-1.5">
-      <label htmlFor={id} className="text-sm font-semibold text-[#1E232A]">
-        {label}
-      </label>
+      <div className="flex items-center justify-between">
+        <label htmlFor={id} className="text-sm font-semibold text-[#1E232A]">
+          {label}
+        </label>
+        {hint && <span className="text-xs text-[#4A5568]">{hint}</span>}
+      </div>
       <div className="relative">
         <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#4A5568] pointer-events-none">
           <Icon className="w-4 h-4" />
@@ -171,6 +189,7 @@ export default function SignUpPage() {
           value={form[name]}
           onChange={handleChange}
           autoComplete={type === 'password' ? 'new-password' : 'off'}
+          {...inputProps}
           className={`w-full pl-10 pr-${extra ? '10' : '4'} py-3 rounded-xl border text-sm bg-white/70 transition-all duration-200 outline-none
             focus:ring-2 focus:ring-[#D35400]/30 focus:border-[#D35400]
             ${errors[name] ? 'border-red-400 bg-red-50/30' : 'border-[#E8E2D5] hover:border-[#D35400]/50'}`}
@@ -190,55 +209,7 @@ export default function SignUpPage() {
 
   return (
     <div className="min-h-screen flex items-stretch">
-      {/* Left decorative panel — hidden on small screens */}
-      <aside className="hidden lg:flex flex-col justify-between w-[42%] bg-[#1E232A] px-12 py-16 relative overflow-hidden">
-        {/* Decorative blobs */}
-        <div className="absolute -top-24 -left-24 w-80 h-80 rounded-full bg-[#D35400]/20 blur-3xl" />
-        <div className="absolute bottom-16 right-0 w-64 h-64 rounded-full bg-[#D35400]/10 blur-2xl" />
-
-        {/* Brand */}
-        <Link href="/" className="group flex items-center gap-3 w-fit">
-          <div className="flex items-center justify-center w-10 h-10 rounded-full bg-[#D35400]/20 text-[#D35400] group-hover:bg-[#D35400] group-hover:text-white transition-colors duration-300">
-            <Leaf className="w-5 h-5 group-hover:rotate-12 transition-transform duration-300" />
-          </div>
-          <div className="flex flex-col">
-            <span className="font-serif text-xl font-bold tracking-wider text-white uppercase leading-none">
-              Saffron <span className="text-[#D35400] font-normal">&</span> Sage
-            </span>
-            <span className="text-[10px] tracking-[0.2em] text-slate-400 uppercase font-medium mt-0.5">
-              Luxury Family Dining
-            </span>
-          </div>
-        </Link>
-
-        {/* Central copy */}
-        <div className="space-y-6 relative z-10">
-          <h2 className="font-serif text-4xl font-bold text-white leading-tight">
-            Your table is<br />
-            <span className="text-[#D35400]">always waiting.</span>
-          </h2>
-          <p className="text-slate-400 text-base leading-relaxed max-w-xs">
-            Create your Saffron & Sage account to unlock exclusive reservations, personalised menus, and priority seating.
-          </p>
-          <ul className="space-y-3">
-            {[
-              'Early access to Chef\'s Tasting events',
-              'Personalised dining preferences saved',
-              'One-click table reservations',
-            ].map((item) => (
-              <li key={item} className="flex items-center gap-2.5 text-sm text-slate-300">
-                <CheckCircle className="w-4 h-4 text-[#D35400] shrink-0" />
-                {item}
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* Footer quote */}
-        <p className="text-slate-600 text-xs italic">
-          &ldquo;Where every meal is a memory.&rdquo;
-        </p>
-      </aside>
+      
 
       {/* Right: form panel */}
       <main className="flex-1 flex items-center justify-center px-5 sm:px-10 py-12 overflow-y-auto">
@@ -291,7 +262,17 @@ export default function SignUpPage() {
             {renderField('signup-email', 'Email Address', 'email', 'you@example.com', Mail, 'email')}
 
             {/* Phone */}
-            {renderField('signup-phone', 'Phone Number', 'phone', '+1 (555) 000-0000', Phone, 'tel')}
+            {renderField(
+              'signup-phone',
+              'Phone Number',
+              'phone',
+              'e.g. 01712345678',
+              Phone,
+              'tel',
+              undefined,
+              { inputMode: 'numeric', pattern: '[0-9]*', maxLength: 11 },
+              '8–11 digits, numbers only'
+            )}
 
             {/* Address */}
             {renderField('signup-address', 'Home Address', 'address', '452 Saffron Lane, Culinary District', Home)}

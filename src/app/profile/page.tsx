@@ -197,7 +197,11 @@ export default function ProfilePage() {
 
   const handleEditChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      const { name, value } = e.target;
+      const { name } = e.target;
+      let { value } = e.target;
+      if (name === 'phone') {
+        value = value.replace(/\D/g, '').slice(0, 11);
+      }
       setEditInfo((p) => ({ ...p, [name]: value }));
       setEditErrors((p) => { const n = { ...p }; delete n[name]; return n; });
       setAddrErrors((p) => { const n = { ...p }; delete n[name]; return n; });
@@ -224,8 +228,12 @@ export default function ProfilePage() {
     const errs: FieldErrors = {};
     if (!editInfo.name.trim() || editInfo.name.trim().length < 2)
       errs.name = 'Name must be at least 2 characters';
-    if (!editInfo.phone.trim() || editInfo.phone.replace(/\D/g, '').length < 10)
-      errs.phone = 'Phone must be at least 10 digits';
+    if (!editInfo.phone.trim())
+      errs.phone = 'Phone number is required';
+    else if (!/^\d+$/.test(editInfo.phone))
+      errs.phone = 'Phone number can only contain numbers';
+    else if (editInfo.phone.length < 8 || editInfo.phone.length > 11)
+      errs.phone = 'Phone number must be a minimum of 8 digits and a maximum of 11 digits';
     if (Object.keys(errs).length) { setEditErrors(errs); return; }
 
     setIsSavingInfo(true);
@@ -535,8 +543,8 @@ export default function ProfilePage() {
 
                   <FormField id="edit-name" label="Full Name" name="name" value={editInfo.name}
                     onChange={handleEditChange} placeholder="Your full name" error={editErrors.name} icon={User} />
-                  <FormField id="edit-phone" label="Phone Number" name="phone" value={editInfo.phone}
-                    onChange={handleEditChange} placeholder="+1 (555) 000-0000" error={editErrors.phone}
+                  <FormField id="edit-phone" label="Phone Number (8–11 digits, numbers only)" name="phone" value={editInfo.phone}
+                    onChange={handleEditChange} placeholder="e.g. 01712345678" error={editErrors.phone}
                     icon={Phone} type="tel" />
 
                   {infoGlobalError && (
