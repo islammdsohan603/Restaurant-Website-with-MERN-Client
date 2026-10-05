@@ -170,7 +170,7 @@ export default function ReservationSection({
       if (onReserve) {
         onReserve(details);
       }
-    }, 700);
+    }, 600);
   };
 
   // Format date display (e.g., Oct 24, 2026)
@@ -194,47 +194,47 @@ export default function ReservationSection({
       id={id}
       className={`py-12 sm:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto ${className}`}
     >
-      {/* Outer Card with rounded-3xl, soft drop shadow, subtle border */}
+      {/* Outer Card with rounded-3xl, matching site's cream background and border */}
       <motion.div
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.2 }}
-        className="relative bg-white rounded-3xl sm:rounded-[2.5rem] border border-slate-100 shadow-2xl shadow-slate-200/50 p-6 sm:p-12 lg:p-16 transition-all duration-300"
+        className="relative bg-white rounded-3xl sm:rounded-[2.5rem] border border-[#E8E2D5] shadow-2xl shadow-[#1E232A]/5 p-6 sm:p-12 lg:p-16 transition-all duration-300"
       >
-        {/* Subtle Decorative Ambient Glow */}
+        {/* Subtle Decorative Ambient Saffron Glows */}
         <div
           aria-hidden="true"
-          className="absolute -top-16 -right-16 w-64 h-64 bg-[#A85322]/5 rounded-full blur-3xl pointer-events-none"
+          className="absolute -top-16 -right-16 w-72 h-72 bg-[#D35400]/5 rounded-full blur-3xl pointer-events-none"
         />
         <div
           aria-hidden="true"
-          className="absolute -bottom-16 -left-16 w-64 h-64 bg-[#A85322]/5 rounded-full blur-3xl pointer-events-none"
+          className="absolute -bottom-16 -left-16 w-72 h-72 bg-[#D35400]/5 rounded-full blur-3xl pointer-events-none"
         />
 
         {/* ─── Header Section ──────────────────────────────────────────────── */}
         <motion.div variants={itemVariants} className="text-center max-w-2xl mx-auto mb-10 sm:mb-12">
-          {/* Small Uppercase Subtitle in Copper/Bronze */}
-          <span className="inline-block text-[#A85322] font-semibold text-xs sm:text-sm tracking-[0.2em] uppercase mb-3">
+          {/* Small Uppercase Subtitle in Saffron Terracotta */}
+          <span className="inline-block text-[#D35400] font-semibold text-xs sm:text-sm tracking-[0.2em] uppercase mb-3">
             SECURE YOUR TABLE
           </span>
 
-          {/* Main Title in Elegant Serif */}
+          {/* Main Title in Elegant Serif Matching Site Theme */}
           <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#1E232A] leading-tight mb-4">
             Effortless Reservation
           </h2>
 
           {/* Description */}
-          <p className="text-slate-600 text-sm sm:text-base leading-relaxed max-w-xl mx-auto">
+          <p className="text-[#4A5568] text-sm sm:text-base leading-relaxed max-w-xl mx-auto">
             Book your dining experience in four simple steps. We cater to families, romantic
             evenings, and group celebrations.
           </p>
         </motion.div>
 
-        {/* ─── Interactive Booking Bar (Light Blue-Gray Container) ─────────── */}
+        {/* ─── Interactive Booking Bar (Harmonious Warm Cream Container) ──── */}
         <motion.div
           variants={itemVariants}
-          className="relative bg-[#F1F4F9] rounded-2xl sm:rounded-3xl border border-slate-200/70 p-4 sm:p-6 lg:p-8"
+          className="relative bg-[#F7F4EE] rounded-2xl sm:rounded-3xl border border-[#E8E2D5] p-4 sm:p-6 lg:p-8"
         >
           {/* 4 Interactive Columns */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 mb-6">
@@ -242,16 +242,16 @@ export default function ReservationSection({
             <div className="flex flex-col gap-1.5">
               <label
                 htmlFor="reservation-date"
-                className="text-xs font-semibold text-slate-800 flex items-center gap-1.5"
+                className="text-xs font-semibold text-[#1E232A] flex items-center gap-1.5"
               >
-                <FiCalendar className="w-3.5 h-3.5 text-[#A85322]" />
+                <FiCalendar className="w-3.5 h-3.5 text-[#D35400]" />
                 <span>Date</span>
               </label>
               <div
                 onClick={() => dateInputRef.current?.showPicker?.()}
-                className="relative flex items-center bg-white rounded-xl sm:rounded-2xl border border-slate-200/80 px-3.5 py-2.5 sm:py-3 shadow-xs hover:border-[#A85322]/50 focus-within:border-[#A85322] focus-within:ring-2 focus-within:ring-[#A85322]/15 transition-all cursor-pointer group"
+                className="relative flex items-center bg-white rounded-xl sm:rounded-2xl border border-[#E8E2D5] px-3.5 py-2.5 sm:py-3 shadow-xs hover:border-[#D35400]/60 focus-within:border-[#D35400] focus-within:ring-2 focus-within:ring-[#D35400]/20 transition-all cursor-pointer group"
               >
-                <span className="text-sm font-medium text-slate-800 flex-1 truncate">
+                <span className="text-sm font-medium text-[#1E232A] flex-1 truncate">
                   {formatDisplayDate(date)}
                 </span>
                 <input
@@ -264,7 +264,7 @@ export default function ReservationSection({
                   className="absolute inset-0 opacity-0 w-full h-full cursor-pointer z-10"
                   aria-label="Reservation Date"
                 />
-                <FiCalendar className="w-4 h-4 text-slate-400 group-hover:text-[#A85322] transition-colors shrink-0 pointer-events-none" />
+                <FiCalendar className="w-4 h-4 text-[#4A5568] group-hover:text-[#D35400] transition-colors shrink-0 pointer-events-none" />
               </div>
             </div>
 
@@ -272,9 +272,9 @@ export default function ReservationSection({
             <div ref={timeDropdownRef} className="flex flex-col gap-1.5 relative">
               <label
                 id="timeslot-label"
-                className="text-xs font-semibold text-slate-800 flex items-center gap-1.5"
+                className="text-xs font-semibold text-[#1E232A] flex items-center gap-1.5"
               >
-                <FiClock className="w-3.5 h-3.5 text-[#A85322]" />
+                <FiClock className="w-3.5 h-3.5 text-[#D35400]" />
                 <span>Time Slot</span>
               </label>
 
@@ -287,12 +287,12 @@ export default function ReservationSection({
                   setIsTimeOpen((prev) => !prev);
                   setIsSeatingOpen(false);
                 }}
-                className="flex items-center justify-between bg-white rounded-xl sm:rounded-2xl border border-slate-200/80 px-3.5 py-2.5 sm:py-3 shadow-xs hover:border-[#A85322]/50 focus:outline-none focus:border-[#A85322] focus:ring-2 focus:ring-[#A85322]/15 transition-all text-left group"
+                className="flex items-center justify-between bg-white rounded-xl sm:rounded-2xl border border-[#E8E2D5] px-3.5 py-2.5 sm:py-3 shadow-xs hover:border-[#D35400]/60 focus:outline-none focus:border-[#D35400] focus:ring-2 focus:ring-[#D35400]/20 transition-all text-left group cursor-pointer"
               >
-                <span className="text-sm font-medium text-slate-800 truncate">{timeSlot}</span>
+                <span className="text-sm font-medium text-[#1E232A] truncate">{timeSlot}</span>
                 <FiChevronDown
-                  className={`w-4 h-4 text-slate-400 group-hover:text-[#A85322] transition-transform duration-200 shrink-0 ml-1.5 ${
-                    isTimeOpen ? "rotate-180 text-[#A85322]" : ""
+                  className={`w-4 h-4 text-[#4A5568] group-hover:text-[#D35400] transition-transform duration-200 shrink-0 ml-1.5 ${
+                    isTimeOpen ? "rotate-180 text-[#D35400]" : ""
                   }`}
                 />
               </button>
@@ -305,7 +305,7 @@ export default function ReservationSection({
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 6, scale: 0.98 }}
                     transition={{ duration: 0.18, ease: "easeOut" }}
-                    className="absolute top-full left-0 right-0 mt-2 z-30 bg-white rounded-xl sm:rounded-2xl border border-slate-200 shadow-xl overflow-hidden max-h-60 overflow-y-auto divide-y divide-slate-100"
+                    className="absolute top-full left-0 right-0 mt-2 z-30 bg-white rounded-xl sm:rounded-2xl border border-[#E8E2D5] shadow-xl overflow-hidden max-h-60 overflow-y-auto divide-y divide-[#E8E2D5]/60"
                     role="listbox"
                   >
                     {TIME_SLOTS.map((slot) => {
@@ -320,19 +320,19 @@ export default function ReservationSection({
                             setTimeSlot(slot.label);
                             setIsTimeOpen(false);
                           }}
-                          className={`w-full flex items-center justify-between px-3.5 py-2.5 text-left text-xs sm:text-sm transition-colors ${
+                          className={`w-full flex items-center justify-between px-3.5 py-2.5 text-left text-xs sm:text-sm transition-colors cursor-pointer ${
                             isSelected
-                              ? "bg-[#A85322]/10 text-[#A85322] font-semibold"
-                              : "text-slate-700 hover:bg-slate-50"
+                              ? "bg-[#D35400]/10 text-[#D35400] font-semibold"
+                              : "text-[#1E232A] hover:bg-[#FDFBF7]"
                           }`}
                         >
                           <div>
                             <p className="leading-snug">{slot.label}</p>
                             {slot.sublabel && (
-                              <p className="text-[10px] text-slate-400 mt-0.5">{slot.sublabel}</p>
+                              <p className="text-[10px] text-[#4A5568] mt-0.5">{slot.sublabel}</p>
                             )}
                           </div>
-                          {isSelected && <FiCheck className="w-3.5 h-3.5 text-[#A85322] shrink-0" />}
+                          {isSelected && <FiCheck className="w-3.5 h-3.5 text-[#D35400] shrink-0" />}
                         </button>
                       );
                     })}
@@ -343,19 +343,19 @@ export default function ReservationSection({
 
             {/* Input 3: Guests Counter (1-12) */}
             <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-semibold text-slate-800 flex items-center gap-1.5">
-                <FiUsers className="w-3.5 h-3.5 text-[#A85322]" />
+              <label className="text-xs font-semibold text-[#1E232A] flex items-center gap-1.5">
+                <FiUsers className="w-3.5 h-3.5 text-[#D35400]" />
                 <span>Guests (1-12)</span>
               </label>
 
-              <div className="flex items-center justify-between bg-white rounded-xl sm:rounded-2xl border border-slate-200/80 p-1 sm:p-1.5 shadow-xs">
+              <div className="flex items-center justify-between bg-white rounded-xl sm:rounded-2xl border border-[#E8E2D5] p-1 sm:p-1.5 shadow-xs">
                 {/* Decrement Button */}
                 <button
                   type="button"
                   onClick={handleDecrement}
                   disabled={guests <= 1}
                   aria-label="Decrease guest count"
-                  className="w-8 h-8 rounded-lg sm:rounded-xl bg-slate-100 hover:bg-slate-200 active:scale-95 disabled:opacity-30 disabled:hover:bg-slate-100 disabled:active:scale-100 text-slate-700 flex items-center justify-center transition-all cursor-pointer disabled:cursor-not-allowed"
+                  className="w-8 h-8 rounded-lg sm:rounded-xl bg-[#E8E2D5]/40 hover:bg-[#E8E2D5] active:scale-95 disabled:opacity-30 disabled:hover:bg-[#E8E2D5]/40 text-[#1E232A] flex items-center justify-center transition-all cursor-pointer disabled:cursor-not-allowed"
                 >
                   <FiMinus className="w-3.5 h-3.5" />
                 </button>
@@ -369,7 +369,7 @@ export default function ReservationSection({
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 4 }}
                       transition={{ duration: 0.15 }}
-                      className="inline-block font-semibold text-sm text-slate-900"
+                      className="inline-block font-semibold text-sm text-[#1E232A]"
                     >
                       {guests} {guests === 1 ? "Guest" : "Guests"}
                     </motion.span>
@@ -382,7 +382,7 @@ export default function ReservationSection({
                   onClick={handleIncrement}
                   disabled={guests >= 12}
                   aria-label="Increase guest count"
-                  className="w-8 h-8 rounded-lg sm:rounded-xl bg-slate-100 hover:bg-slate-200 active:scale-95 disabled:opacity-30 disabled:hover:bg-slate-100 disabled:active:scale-100 text-slate-700 flex items-center justify-center transition-all cursor-pointer disabled:cursor-not-allowed"
+                  className="w-8 h-8 rounded-lg sm:rounded-xl bg-[#E8E2D5]/40 hover:bg-[#E8E2D5] active:scale-95 disabled:opacity-30 disabled:hover:bg-[#E8E2D5]/40 text-[#1E232A] flex items-center justify-center transition-all cursor-pointer disabled:cursor-not-allowed"
                 >
                   <FiPlus className="w-3.5 h-3.5" />
                 </button>
@@ -393,9 +393,9 @@ export default function ReservationSection({
             <div ref={seatingDropdownRef} className="flex flex-col gap-1.5 relative">
               <label
                 id="seating-label"
-                className="text-xs font-semibold text-slate-800 flex items-center gap-1.5"
+                className="text-xs font-semibold text-[#1E232A] flex items-center gap-1.5"
               >
-                <LuArmchair className="w-3.5 h-3.5 text-[#A85322]" />
+                <LuArmchair className="w-3.5 h-3.5 text-[#D35400]" />
                 <span>Seating Preference</span>
               </label>
 
@@ -408,12 +408,12 @@ export default function ReservationSection({
                   setIsSeatingOpen((prev) => !prev);
                   setIsTimeOpen(false);
                 }}
-                className="flex items-center justify-between bg-white rounded-xl sm:rounded-2xl border border-slate-200/80 px-3.5 py-2.5 sm:py-3 shadow-xs hover:border-[#A85322]/50 focus:outline-none focus:border-[#A85322] focus:ring-2 focus:ring-[#A85322]/15 transition-all text-left group"
+                className="flex items-center justify-between bg-white rounded-xl sm:rounded-2xl border border-[#E8E2D5] px-3.5 py-2.5 sm:py-3 shadow-xs hover:border-[#D35400]/60 focus:outline-none focus:border-[#D35400] focus:ring-2 focus:ring-[#D35400]/20 transition-all text-left group cursor-pointer"
               >
-                <span className="text-sm font-medium text-slate-800 truncate">{seating}</span>
+                <span className="text-sm font-medium text-[#1E232A] truncate">{seating}</span>
                 <FiChevronDown
-                  className={`w-4 h-4 text-slate-400 group-hover:text-[#A85322] transition-transform duration-200 shrink-0 ml-1.5 ${
-                    isSeatingOpen ? "rotate-180 text-[#A85322]" : ""
+                  className={`w-4 h-4 text-[#4A5568] group-hover:text-[#D35400] transition-transform duration-200 shrink-0 ml-1.5 ${
+                    isSeatingOpen ? "rotate-180 text-[#D35400]" : ""
                   }`}
                 />
               </button>
@@ -426,7 +426,7 @@ export default function ReservationSection({
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 6, scale: 0.98 }}
                     transition={{ duration: 0.18, ease: "easeOut" }}
-                    className="absolute top-full left-0 right-0 mt-2 z-30 bg-white rounded-xl sm:rounded-2xl border border-slate-200 shadow-xl overflow-hidden max-h-60 overflow-y-auto divide-y divide-slate-100"
+                    className="absolute top-full left-0 right-0 mt-2 z-30 bg-white rounded-xl sm:rounded-2xl border border-[#E8E2D5] shadow-xl overflow-hidden max-h-60 overflow-y-auto divide-y divide-[#E8E2D5]/60"
                     role="listbox"
                   >
                     {SEATING_OPTIONS.map((opt) => {
@@ -441,19 +441,19 @@ export default function ReservationSection({
                             setSeating(opt.label);
                             setIsSeatingOpen(false);
                           }}
-                          className={`w-full flex items-center justify-between px-3.5 py-2.5 text-left text-xs sm:text-sm transition-colors ${
+                          className={`w-full flex items-center justify-between px-3.5 py-2.5 text-left text-xs sm:text-sm transition-colors cursor-pointer ${
                             isSelected
-                              ? "bg-[#A85322]/10 text-[#A85322] font-semibold"
-                              : "text-slate-700 hover:bg-slate-50"
+                              ? "bg-[#D35400]/10 text-[#D35400] font-semibold"
+                              : "text-[#1E232A] hover:bg-[#FDFBF7]"
                           }`}
                         >
                           <div>
                             <p className="leading-snug">{opt.label}</p>
                             {opt.sublabel && (
-                              <p className="text-[10px] text-slate-400 mt-0.5">{opt.sublabel}</p>
+                              <p className="text-[10px] text-[#4A5568] mt-0.5">{opt.sublabel}</p>
                             )}
                           </div>
-                          {isSelected && <FiCheck className="w-3.5 h-3.5 text-[#A85322] shrink-0" />}
+                          {isSelected && <FiCheck className="w-3.5 h-3.5 text-[#D35400] shrink-0" />}
                         </button>
                       );
                     })}
@@ -465,20 +465,20 @@ export default function ReservationSection({
 
           {/* ─── Bottom Info & CTA Row ─────────────────────────────────────── */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-2">
-            {/* Left: Info Text */}
-            <div className="flex items-center gap-2 text-slate-500 text-xs sm:text-sm">
-              <FiInfo className="w-4 h-4 text-[#A85322] shrink-0" />
+            {/* Left: Info Text in Project Muted Color */}
+            <div className="flex items-center gap-2 text-[#4A5568] text-xs sm:text-sm">
+              <FiInfo className="w-4 h-4 text-[#D35400] shrink-0" />
               <span>No cancellation fees. Instant SMS &amp; email confirmation sent.</span>
             </div>
 
-            {/* Right: Primary CTA Button in Warm Terracotta/Bronze */}
+            {/* Right: Primary CTA Button in Signature Saffron Terracotta */}
             <motion.button
               type="button"
               onClick={handleConfirmReservation}
               disabled={isSubmitting}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.97 }}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#A85322] hover:bg-[#914418] text-white px-7 py-3 rounded-full sm:rounded-2xl font-semibold text-sm sm:text-base shadow-md shadow-[#A85322]/20 hover:shadow-lg hover:shadow-[#A85322]/30 transition-all duration-200 cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#D35400] hover:bg-[#B94600] text-white px-8 py-3.5 rounded-full sm:rounded-2xl font-semibold text-sm sm:text-base shadow-lg shadow-[#D35400]/25 hover:shadow-xl hover:shadow-[#D35400]/30 transition-all duration-200 cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed"
             >
               {isSubmitting ? (
                 <>
@@ -517,19 +517,19 @@ export default function ReservationSection({
       {/* ─── Success Confirmation Modal ─────────────────────────────────────── */}
       <AnimatePresence>
         {confirmedBooking && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#1E232A]/60 backdrop-blur-xs">
             <motion.div
               initial={{ opacity: 0, scale: 0.92, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 15 }}
               transition={{ duration: 0.25, ease: "easeOut" }}
-              className="relative w-full max-w-lg bg-white rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-100 overflow-hidden"
+              className="relative w-full max-w-lg bg-[#FDFBF7] rounded-3xl p-6 sm:p-8 shadow-2xl border border-[#E8E2D5] overflow-hidden"
             >
               {/* Close Button */}
               <button
                 type="button"
                 onClick={() => setConfirmedBooking(null)}
-                className="absolute top-5 right-5 text-slate-400 hover:text-slate-700 p-1.5 rounded-full hover:bg-slate-100 transition-colors"
+                className="absolute top-5 right-5 text-[#4A5568] hover:text-[#1E232A] p-1.5 rounded-full hover:bg-[#E8E2D5]/50 transition-colors cursor-pointer"
                 aria-label="Close confirmation"
               >
                 <FiX className="w-5 h-5" />
@@ -537,11 +537,11 @@ export default function ReservationSection({
 
               {/* Success Badge */}
               <div className="flex items-center gap-3 mb-5">
-                <div className="w-12 h-12 rounded-2xl bg-[#A85322]/10 text-[#A85322] flex items-center justify-center shrink-0">
+                <div className="w-12 h-12 rounded-2xl bg-[#D35400]/10 text-[#D35400] flex items-center justify-center shrink-0 border border-[#D35400]/20">
                   <LuSparkles className="w-6 h-6" />
                 </div>
                 <div>
-                  <span className="text-xs uppercase tracking-widest text-[#A85322] font-semibold">
+                  <span className="text-xs uppercase tracking-widest text-[#D35400] font-semibold">
                     Reservation Confirmed
                   </span>
                   <h3 className="font-serif text-2xl font-bold text-[#1E232A]">
@@ -550,46 +550,46 @@ export default function ReservationSection({
                 </div>
               </div>
 
-              <p className="text-slate-600 text-sm mb-6 leading-relaxed">
+              <p className="text-[#4A5568] text-sm mb-6 leading-relaxed">
                 Your luxury dining reservation has been successfully booked at Saffron &amp; Sage.
                 A confirmation has been sent to your email and phone.
               </p>
 
               {/* Reservation Summary Card */}
-              <div className="bg-[#F1F4F9] rounded-2xl p-4 sm:p-5 border border-slate-200/70 mb-6 space-y-3">
+              <div className="bg-white rounded-2xl p-4 sm:p-5 border border-[#E8E2D5] mb-6 space-y-3">
                 <div className="flex items-center justify-between text-xs sm:text-sm">
-                  <span className="text-slate-500 flex items-center gap-1.5">
-                    <FiCalendar className="w-3.5 h-3.5 text-[#A85322]" /> Date
+                  <span className="text-[#4A5568] flex items-center gap-1.5">
+                    <FiCalendar className="w-3.5 h-3.5 text-[#D35400]" /> Date
                   </span>
-                  <span className="font-semibold text-slate-800">
+                  <span className="font-semibold text-[#1E232A]">
                     {formatDisplayDate(confirmedBooking.date)}
                   </span>
                 </div>
                 <div className="flex items-center justify-between text-xs sm:text-sm">
-                  <span className="text-slate-500 flex items-center gap-1.5">
-                    <FiClock className="w-3.5 h-3.5 text-[#A85322]" /> Time Slot
+                  <span className="text-[#4A5568] flex items-center gap-1.5">
+                    <FiClock className="w-3.5 h-3.5 text-[#D35400]" /> Time Slot
                   </span>
-                  <span className="font-semibold text-slate-800">{confirmedBooking.timeSlot}</span>
+                  <span className="font-semibold text-[#1E232A]">{confirmedBooking.timeSlot}</span>
                 </div>
                 <div className="flex items-center justify-between text-xs sm:text-sm">
-                  <span className="text-slate-500 flex items-center gap-1.5">
-                    <FiUsers className="w-3.5 h-3.5 text-[#A85322]" /> Guests
+                  <span className="text-[#4A5568] flex items-center gap-1.5">
+                    <FiUsers className="w-3.5 h-3.5 text-[#D35400]" /> Guests
                   </span>
-                  <span className="font-semibold text-slate-800">
+                  <span className="font-semibold text-[#1E232A]">
                     {confirmedBooking.guests} {confirmedBooking.guests === 1 ? "Guest" : "Guests"}
                   </span>
                 </div>
                 <div className="flex items-center justify-between text-xs sm:text-sm">
-                  <span className="text-slate-500 flex items-center gap-1.5">
-                    <LuArmchair className="w-3.5 h-3.5 text-[#A85322]" /> Seating
+                  <span className="text-[#4A5568] flex items-center gap-1.5">
+                    <LuArmchair className="w-3.5 h-3.5 text-[#D35400]" /> Seating
                   </span>
-                  <span className="font-semibold text-slate-800">{confirmedBooking.seating}</span>
+                  <span className="font-semibold text-[#1E232A]">{confirmedBooking.seating}</span>
                 </div>
 
                 {confirmedBooking.confirmationCode && (
-                  <div className="pt-2 border-t border-slate-200/80 flex items-center justify-between text-xs sm:text-sm">
-                    <span className="text-slate-500 font-medium">Confirmation Code</span>
-                    <span className="font-mono font-bold tracking-wider text-[#A85322]">
+                  <div className="pt-2 border-t border-[#E8E2D5] flex items-center justify-between text-xs sm:text-sm">
+                    <span className="text-[#4A5568] font-medium">Confirmation Code</span>
+                    <span className="font-mono font-bold tracking-wider text-[#D35400]">
                       {confirmedBooking.confirmationCode}
                     </span>
                   </div>
@@ -601,7 +601,7 @@ export default function ReservationSection({
                 <button
                   type="button"
                   onClick={() => setConfirmedBooking(null)}
-                  className="w-full bg-[#A85322] hover:bg-[#914418] text-white py-3 px-6 rounded-xl font-semibold text-sm shadow-md transition-colors"
+                  className="w-full bg-[#D35400] hover:bg-[#B94600] text-white py-3.5 px-6 rounded-xl font-semibold text-sm shadow-md shadow-[#D35400]/20 transition-all cursor-pointer"
                 >
                   Done
                 </button>
