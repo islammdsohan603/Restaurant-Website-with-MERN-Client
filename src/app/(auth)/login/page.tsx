@@ -95,57 +95,7 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex items-stretch">
-      {/* Left decorative panel */}
-      <aside className="hidden lg:flex flex-col justify-between w-[42%] bg-[#1E232A] px-12 py-16 relative overflow-hidden">
-        <div className="absolute -top-24 -left-24 w-80 h-80 rounded-full bg-[#D35400]/20 blur-3xl" />
-        <div className="absolute bottom-16 right-0 w-64 h-64 rounded-full bg-[#D35400]/10 blur-2xl" />
-
-        {/* Brand */}
-        <Link href="/" className="group flex items-center gap-3 w-fit">
-          <div className="flex items-center justify-center w-10 h-10 rounded-full bg-[#D35400]/20 text-[#D35400] group-hover:bg-[#D35400] group-hover:text-white transition-colors duration-300">
-            <Leaf className="w-5 h-5 group-hover:rotate-12 transition-transform duration-300" />
-          </div>
-          <div className="flex flex-col">
-            <span className="font-serif text-xl font-bold tracking-wider text-white uppercase leading-none">
-              Saffron <span className="text-[#D35400] font-normal">&</span> Sage
-            </span>
-            <span className="text-[10px] tracking-[0.2em] text-slate-400 uppercase font-medium mt-0.5">
-              Luxury Family Dining
-            </span>
-          </div>
-        </Link>
-
-        {/* Central copy */}
-        <div className="space-y-6 relative z-10">
-          <div className="inline-flex items-center gap-2 bg-[#D35400]/10 border border-[#D35400]/20 px-3 py-1.5 rounded-full text-xs font-semibold text-[#D35400] tracking-wide uppercase">
-            <Star className="w-3.5 h-3.5 fill-[#D35400]" />
-            Michelin Recommended 2026
-          </div>
-          <h2 className="font-serif text-4xl font-bold text-white leading-tight">
-            Welcome<br />
-            <span className="text-[#D35400]">back.</span>
-          </h2>
-          <p className="text-slate-400 text-base leading-relaxed max-w-xs">
-            Sign in to manage your reservations, view your dining history, and enjoy exclusive member benefits.
-          </p>
-          <ul className="space-y-3">
-            {[
-              'Priority booking for popular dates',
-              'Your saved preferences & allergies',
-              'Exclusive member-only seasonal menus',
-            ].map((item) => (
-              <li key={item} className="flex items-center gap-2.5 text-sm text-slate-300">
-                <CheckCircle className="w-4 h-4 text-[#D35400] shrink-0" />
-                {item}
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <p className="text-slate-600 text-xs italic">
-          &ldquo;A meal remembered is a life enriched.&rdquo;
-        </p>
-      </aside>
+       
 
       {/* Right: form panel */}
       <main className="flex-1 flex items-center justify-center px-5 sm:px-10 py-12">
