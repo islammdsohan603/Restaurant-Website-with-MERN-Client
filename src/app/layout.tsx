@@ -1,68 +1,37 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans, Playfair_Display, Cormorant_Garamond, Inter, Outfit, Poppins } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/common/Navbar";
-import Footer from "@/components/common/Footer";
 
-const jakartaSans = Plus_Jakarta_Sans({
-  variable: "--font-jakarta-sans",
+const geistSans = Geist({
+  variable: "--font-geist-sans",
   subsets: ["latin"],
-  display: "swap",
 });
 
-const playfairDisplay = Playfair_Display({
-  variable: "--font-playfair",
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
   subsets: ["latin"],
-  display: "swap",
-});
-
-const cormorant = Cormorant_Garamond({
-  variable: "--font-cormorant",
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-  display: "swap",
-});
-
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const outfit = Outfit({
-  variable: "--font-outfit",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const poppins = Poppins({
-  variable: "--font-poppins",
-  subsets: ["latin"],
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
-  display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "Saffron & Sage | Luxury Family Restaurant",
-  description: "Experience fine culinary arts, artisanal family recipes, and luxury dining at Saffron & Sage.",
+  title: {
+    default: "Somporko",
+    template: "%s | Somporko",
+  },
+  description:
+    "সর্বশেষ সংবাদ, গুরুত্বপূর্ণ তথ্য এবং মানসম্মত ব্লগ পড়ুন Somporko-তে।",
 };
 
-export default function RootLayout({
-  children,
-}: {
+type RootLayoutProps = Readonly<{
   children: React.ReactNode;
-}) {
+}>;
+
+export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html
-      lang="en"
-      className={`${jakartaSans.variable} ${playfairDisplay.variable} ${cormorant.variable} ${inter.variable} ${outfit.variable} ${poppins.variable} h-full antialiased`}
+      lang="bn"
+      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-[#FDFBF7] text-[#1E232A]">
-          <Navbar />
-        {children}
-        <Footer/>
-      </body>
+      <body className="min-h-full flex flex-col">{children}</body>
     </html>
   );
 }
-
