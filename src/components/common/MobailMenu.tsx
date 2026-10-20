@@ -89,7 +89,7 @@ const MobailMenu = ({ isOpen, onClose, links }: MobailMenuProps) => {
             initial="hidden"
             animate="visible"
             exit="exit"
-            className="absolute right-0 top-0 flex h-full w-[min(88%,420px)] flex-col overflow-y-auto border-l border-[#EAE5D9] bg-[#FFFEFA] px-6 pb-8 pt-6 text-[#25251F] shadow-2xl sm:px-9"
+            className="absolute right-0 top-0 flex h-full w-[min(88%,420px)] flex-col overflow-y-auto border-l border-[#EAE5D9] bg-[#11110F] px-6 pb-8 pt-6 text-white shadow-2xl sm:px-9"
           >
             {/* Drawer header */}
             <div className="flex items-center justify-between border-b border-[#EAE5D9] pb-5">
