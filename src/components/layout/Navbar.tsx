@@ -22,7 +22,7 @@ const Navbar = () => {
 
   return (
     <>
-      <header className="navbar-enter sticky top-0 z-50 border-b border-white/10 bg-[#0d0817]/95 text-white shadow-[0_4px_24px_rgba(0,0,0,0.2)] backdrop-blur-xl">
+      <header className="navbar-enter sticky top-0 z-50 border-b border-white/10 bg-[#11110F] text-white shadow-[0_4px_24px_rgba(0,0,0,0.2)] backdrop-blur-xl">
         <nav
           aria-label="Main navigation"
           className="mx-auto flex h-[86px] max-w-[1440px] items-center justify-between gap-4 px-5 sm:px-8 lg:h-[96px] lg:px-10 xl:px-16"
