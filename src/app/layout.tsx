@@ -13,14 +13,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: {
-    default: "Somporko",
-    template: "%s | Somporko",
-  },
-  description:
-    "সর্বশেষ সংবাদ, গুরুত্বপূর্ণ তথ্য এবং মানসম্মত ব্লগ পড়ুন Somporko-তে।",
-};
+export const metadata: Metadata = {};
 
 type RootLayoutProps = Readonly<{
   children: React.ReactNode;
