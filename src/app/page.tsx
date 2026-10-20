@@ -1,7 +1,9 @@
+import HomePage from "../components/home/HomePage";
+
 export default function Home() {
   return (
     <div>
-      <h1>sohan islam</h1>
+      <HomePage />
     </div>
   );
 }
