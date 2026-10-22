@@ -13,7 +13,7 @@ export default function SpacesSection() {
     >
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_0%,rgba(184,149,90,0.07),transparent_55%)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-linear(ellipse_at_50%_0%,rgba(184,149,90,0.07),transparent_55%)]"
       />
 
       <div className="relative mx-auto max-w-[1440px] px-5 sm:px-8 lg:px-12 xl:px-16">
