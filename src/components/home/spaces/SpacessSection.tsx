@@ -1,8 +1,8 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import SpaceCard from "./SpaceCard";
-import { spaces } from "./spacesDate";
+import { spaces } from "./SpaceDate";
 
 export default function SpacesSection() {
   return (
@@ -18,10 +18,10 @@ export default function SpacesSection() {
 
       <div className="relative mx-auto max-w-[1440px] px-5 sm:px-8 lg:px-12 xl:px-16">
         <motion.div
-          initial={false}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.25 }}
-          transition={{ duration: 0.75, ease: "easeOut" }}
+          transition={{ duration: 0.7, ease: "easeOut" }}
           className="mb-10 grid gap-5 sm:mb-12 lg:grid-cols-[1.2fr_0.8fr] lg:items-end lg:gap-12"
         >
           <div>
@@ -38,8 +38,8 @@ export default function SpacesSection() {
           </div>
 
           <p className="max-w-[410px] text-sm leading-6 text-[#B0AAA0] lg:justify-self-end">
-            Choose your ambiance across our four-story historic townhouse, each
-            environment calibrated for distinct sensory experiences.
+            Choose your ambiance across our historic townhouse, with each
+            environment designed for a distinct dining experience.
           </p>
         </motion.div>
 

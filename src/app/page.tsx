@@ -1,11 +1,11 @@
-import HomePage from "../components/home/HomePage";
-import SpacesSection from "../components/home/spaces/SpacesSection";
+import HomePage from "../components/home/HompePage";
+import SpacesSection from "../components/home/spaces/SpacessSection";
 
 export default function Home() {
   return (
-    <div>
+    <>
       <HomePage />
       <SpacesSection />
-    </div>
+    </>
   );
 }

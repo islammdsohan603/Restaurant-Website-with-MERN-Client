@@ -1,10 +1,6 @@
 "use client";
 
-import { type ReactNode, useRef } from "react";
-import { gsap } from "gsap";
-import { useGSAP } from "@gsap/react";
-
-gsap.registerPlugin(useGSAP);
+import { useEffect, type ReactNode } from "react";
 
 type HomePageAnimationsProps = {
   children: ReactNode;
@@ -13,84 +9,39 @@ type HomePageAnimationsProps = {
 export default function HomePageAnimations({
   children,
 }: HomePageAnimationsProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const root = document.querySelector<HTMLElement>(
+      "[data-home-animation-root]",
+    );
 
-  useGSAP(
-    () => {
-      const root = containerRef.current;
-      if (!root) return;
+    if (!root) return;
 
-      const reducedMotion = window.matchMedia(
-        "(prefers-reduced-motion: reduce)",
-      ).matches;
+    const items = root.querySelectorAll<HTMLElement>("[data-hero-item]");
 
-      if (reducedMotion) return;
+    const visual = root.querySelector<HTMLElement>(".hero-visual");
 
-      const copyItems = gsap.utils.toArray<HTMLElement>(
-        "[data-hero-item]",
-        root,
-      );
-      const visual = root.querySelector<HTMLElement>(".hero-visual");
-      const dishCard = root.querySelector<HTMLElement>(".dish-card");
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
 
-      try {
-        gsap.set(copyItems, {
-          autoAlpha: 0,
-          x: -38,
-        });
+    if (reducedMotion) return;
 
-        if (visual) {
-          gsap.set(visual, {
-            autoAlpha: 0,
-            x: 55,
-          });
-        }
+    items.forEach((item, index) => {
+      item.style.setProperty("--hero-delay", `${index * 120}ms`);
+      item.classList.add("hero-item-animated");
+    });
 
-        const entrance = gsap.timeline({
-          defaults: { ease: "power3.out" },
-        });
+    visual?.classList.add("hero-visual-animated");
 
-        entrance.to(copyItems, {
-          autoAlpha: 1,
-          x: 0,
-          duration: 0.85,
-          stagger: 0.13,
-          clearProps: "transform,opacity,visibility",
-        });
+    return () => {
+      items.forEach((item) => {
+        item.classList.remove("hero-item-animated");
+        item.style.removeProperty("--hero-delay");
+      });
 
-        if (visual) {
-          entrance.to(
-            visual,
-            {
-              autoAlpha: 1,
-              x: 0,
-              duration: 1.15,
-              clearProps: "transform,opacity,visibility",
-            },
-            0.15,
-          );
-        }
+      visual?.classList.remove("hero-visual-animated");
+    };
+  }, []);
 
-        if (dishCard) {
-          gsap.to(dishCard, {
-            y: -7,
-            duration: 2.2,
-            repeat: -1,
-            yoyo: true,
-            ease: "sine.inOut",
-          });
-        }
-      } catch (error) {
-        [...copyItems, ...(visual ? [visual] : [])].forEach((element) => {
-          element.style.removeProperty("opacity");
-          element.style.removeProperty("visibility");
-          element.style.removeProperty("transform");
-        });
-        console.error("Failed to initialize home page animations.", error);
-      }
-    },
-    { scope: containerRef },
-  );
-
-  return <div ref={containerRef}>{children}</div>;
+  return <div data-home-animation-root>{children}</div>;
 }
