@@ -2,7 +2,7 @@
 
 import { motion } from "motion/react";
 import SpaceCard from "./SpaceCard";
-import { spaces } from "./SpaceDate";
+import { spaces } from "../../db/SpaceDate";
 
 export default function SpacesSection() {
   return (

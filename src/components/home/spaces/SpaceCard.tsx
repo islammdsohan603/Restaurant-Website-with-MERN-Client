@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, type CSSProperties } from "react";
 import { FiArrowUpRight } from "react-icons/fi";
-import type { Space } from "./SpaceDate";
+import type { Space } from "../../db/SpaceDate";
 
 type SpaceCardProps = {
   space: Space;

@@ -1,4 +1,4 @@
-import type { MenuCategory } from "./MenuData";
+import type { MenuCategory } from "../../db/MenuData";
 
 type MenuCategoriesProps = {
   categories: MenuCategory[];
