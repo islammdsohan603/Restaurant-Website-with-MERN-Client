@@ -1,5 +1,5 @@
 import { RiFileWordLine } from "react-icons/ri";
-import { winePairing } from "../../db/philosophyData";
+import { winePairing } from "../../db/PhilosophyData";
 
 export default function WinePairingCard() {
   return (
