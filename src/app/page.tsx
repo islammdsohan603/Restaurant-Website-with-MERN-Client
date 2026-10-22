@@ -1,4 +1,5 @@
 import HomePage from "../components/home/HompePage";
+import MenuSection from "../components/home/menu/MenuSection";
 import SpacesSection from "../components/home/spaces/SpacessSection";
 
 export default function Home() {
@@ -6,6 +7,7 @@ export default function Home() {
     <>
       <HomePage />
       <SpacesSection />
+      <MenuSection />
     </>
   );
 }

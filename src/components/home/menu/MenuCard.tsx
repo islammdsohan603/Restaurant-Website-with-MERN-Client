@@ -19,7 +19,7 @@ export default function MenuCard({ item, onAddToOrder }: MenuCardProps) {
           className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
         />
 
-        <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/50 via-transparent to-black/10" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/10" />
 
         <span className="absolute left-2.5 top-2.5 rounded-sm border border-[#D6B77D]/30 bg-[#171511]/85 px-2 py-1 text-[8px] font-semibold uppercase tracking-[0.1em] text-[#E7CB94] backdrop-blur-sm">
           {item.badge}
