@@ -2,9 +2,9 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef } from "react";
-import { FiArrowUpRight, FiCalendar } from "react-icons/fi";
-import type { Space } from "./spacesDate";
+import { useEffect, useRef, type CSSProperties } from "react";
+import { FiArrowUpRight } from "react-icons/fi";
+import type { Space } from "./SpaceDate";
 
 type SpaceCardProps = {
   space: Space;
@@ -13,19 +13,19 @@ type SpaceCardProps = {
 
 export default function SpaceCard({ space, index }: SpaceCardProps) {
   const cardRef = useRef<HTMLElement>(null);
-  const ActionIcon =
-    space.icon ?? (space.id === "chefs-counter" ? FiCalendar : FiArrowUpRight);
+  const ActionIcon = space.icon ?? FiArrowUpRight;
 
   useEffect(() => {
     const card = cardRef.current;
+
     if (!card) return;
 
-    // Reduced-motion users should not receive entrance animations.
-    const reduceMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-    if (reduceMotion) return;
+    if (mediaQuery.matches) {
+      card.classList.add("is-visible");
+      return;
+    }
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -42,14 +42,20 @@ export default function SpaceCard({ space, index }: SpaceCardProps) {
 
     observer.observe(card);
 
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+    };
   }, []);
 
   return (
     <article
       ref={cardRef}
       className="space-card-reveal group flex h-full flex-col overflow-hidden rounded-xl border border-white/[0.07] bg-[#201F1C] transition-[border-color,transform] duration-300 hover:-translate-y-1 hover:border-[#B8955A]/40"
-      style={{ "--card-delay": `${index * 120}ms` } as React.CSSProperties}
+      style={
+        {
+          "--card-delay": `${index * 120}ms`,
+        } as CSSProperties
+      }
     >
       <Link
         href={space.href}
@@ -88,6 +94,7 @@ export default function SpaceCard({ space, index }: SpaceCardProps) {
           className="mt-auto inline-flex w-fit items-center gap-2 pt-5 text-[10px] font-medium uppercase tracking-[0.13em] text-[#D6B77D] transition-colors hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#D6B77D]"
         >
           {space.action}
+
           <ActionIcon
             size={14}
             aria-hidden="true"
