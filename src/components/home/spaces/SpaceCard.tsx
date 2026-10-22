@@ -72,7 +72,7 @@ export default function SpaceCard({ space, index }: SpaceCardProps) {
 
         <div
           aria-hidden="true"
-          className="absolute inset-0 bg-gradient-to-t from-[#11110F]/80 via-black/10 to-transparent"
+          className="absolute inset-0 bg-linear-to-t from-[#11110F]/80 via-black/10 to-transparent"
         />
 
         <span className="absolute left-3 top-3 border border-white/15 bg-[#11110F]/75 px-2.5 py-1.5 text-[9px] uppercase tracking-[0.16em] text-[#F1D49C] backdrop-blur-md sm:left-4 sm:top-4">
