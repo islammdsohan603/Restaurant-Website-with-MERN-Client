@@ -42,7 +42,7 @@ export default function MenuSection() {
     >
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-[radial-linear(ellipse_at_50%_0%,rgba(184,149,90,0.075),transparent_55%)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_0%,rgba(184,149,90,0.075),transparent_55%)]"
       />
 
       <div className="relative mx-auto max-w-[1440px] px-5 sm:px-8 lg:px-12 xl:px-16">
@@ -54,7 +54,7 @@ export default function MenuSection() {
           onCategoryChange={setActiveCategory}
         />
 
-        <div className="mb-5 flex items-center justify-between gap-3">
+        <div data-gsap-reveal className="mb-5 flex items-center justify-between gap-3">
           <p
             className="text-[10px] uppercase tracking-[0.15em] text-[#918B80]"
             aria-live="polite"
@@ -78,11 +78,11 @@ export default function MenuSection() {
           </p>
         )}
 
-        <div className="mt-9 flex justify-center sm:mt-12">
+        <div data-gsap-reveal className="mt-9 flex justify-center sm:mt-12">
           <a
             href="/menu"
             data-gsap-hover="button"
-            className="group inline-flex min-h-11 items-center gap-3 border border-[#B8955A]/35 px-5 py-3 text-xm font-semibold uppercase tracking-[0.15em] text-[#E5C38B] hover:border-[#D6B77D] hover:bg-[#B8955A]/10"
+            className="group inline-flex min-h-11 items-center gap-3 border border-[#B8955A]/35 px-5 py-3 text-xs font-semibold uppercase tracking-[0.15em] text-[#E5C38B] transition-colors hover:border-[#D6B77D] hover:bg-[#B8955A]/10"
           >
             View Full Seasonal Tasting Menu
             <FiArrowRight

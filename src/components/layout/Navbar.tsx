@@ -4,11 +4,9 @@ import { useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
+import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { FiArrowUpRight, FiMenu } from "react-icons/fi";
 import MobailMenu from "../common/MobailMenu";
-
-gsap.registerPlugin(useGSAP);
 
 export const navLinks = [
   { name: "Home", href: "/" },
@@ -34,23 +32,44 @@ export default function Navbar() {
 
       const media = gsap.matchMedia();
       media.add("(prefers-reduced-motion: no-preference)", () => {
-        gsap.fromTo(
-          header,
-          { autoAlpha: 0, y: -14 },
-          { autoAlpha: 1, y: 0, duration: 0.55, ease: "power3.out" },
-        );
-        gsap.fromTo(
-          items,
-          { autoAlpha: 0, y: -8 },
-          {
-            autoAlpha: 1,
-            y: 0,
-            duration: 0.5,
-            stagger: 0.08,
-            delay: 0.08,
-            ease: "power3.out",
-          },
-        );
+        gsap.from(header, {
+          autoAlpha: 0,
+          y: -14,
+          duration: 0.55,
+          ease: "power3.out",
+        });
+        gsap.from(items, {
+          autoAlpha: 0,
+          y: -8,
+          duration: 0.5,
+          stagger: 0.08,
+          delay: 0.08,
+          ease: "power3.out",
+        });
+      });
+
+      const setScrolledStyle = (scrolled: boolean) => {
+        const reducedMotion = window.matchMedia(
+          "(prefers-reduced-motion: reduce)",
+        ).matches;
+
+        gsap.to(header, {
+          backgroundColor: scrolled
+            ? "rgba(17, 17, 15, 0.9)"
+            : "rgba(17, 17, 15, 0.95)",
+          backdropFilter: scrolled ? "blur(18px)" : "blur(0px)",
+          borderColor: scrolled ? "rgba(184, 149, 90, 0.32)" : "transparent",
+          duration: reducedMotion ? 0 : 0.25,
+          ease: "power2.out",
+          overwrite: "auto",
+        });
+      };
+
+      ScrollTrigger.create({
+        trigger: document.documentElement,
+        start: "top -50px",
+        onEnter: () => setScrolledStyle(true),
+        onLeaveBack: () => setScrolledStyle(false),
       });
 
       return () => media.revert();
@@ -62,7 +81,7 @@ export default function Navbar() {
     <>
       <header
         ref={headerRef}
-        className="sticky top-0 z-50 border-b border-white/10 bg-[#11110F]/95 text-white shadow-[0_4px_24px_rgba(0,0,0,0.2)] backdrop-blur-xl"
+        className="sticky top-0 z-50 border-b border-transparent bg-[#11110F]/95 text-white shadow-[0_4px_24px_rgba(0,0,0,0.2)] backdrop-blur-none"
       >
         <nav
           aria-label="Main navigation"
@@ -75,7 +94,7 @@ export default function Navbar() {
             data-navbar-item
             className="group flex shrink-0 items-center gap-3"
           >
-            <span             className="flex h-11 w-11 items-center justify-center rounded-full border border-[#B8955A]/70 bg-white/5 font-serif text-2xl italic text-[#D0B477] sm:h-[52px] sm:w-[52px]">
+            <span className="flex h-11 w-11 items-center justify-center rounded-full border border-[#B8955A]/70 bg-white/5 font-serif text-2xl italic text-[#D0B477] sm:h-[52px] sm:w-[52px]">
               E<span className="-ml-1">O</span>
             </span>
 
@@ -102,7 +121,7 @@ export default function Navbar() {
                   href={link.href}
                   aria-current={isActive ? "page" : undefined}
                   data-navbar-item
-                  className={`group relative whitespace-nowrap py-3 text-sm font-medium tracking-wide xl:text-base ${
+                  className={`group relative whitespace-nowrap py-3 text-sm font-medium tracking-wide transition-colors xl:text-base ${
                     isActive
                       ? "text-[#D0B477]"
                       : "text-white/80 hover:text-[#D0B477]"
@@ -112,7 +131,7 @@ export default function Navbar() {
                   {link.name}
 
                   <span
-                    className={`absolute bottom-1 left-0 h-px bg-[#D0B477] ${
+                    className={`absolute bottom-1 left-0 h-px bg-[#D0B477] transition-[width] duration-300 ${
                       isActive ? "w-full" : "w-0 group-hover:w-full"
                     }`}
                   />
@@ -124,13 +143,10 @@ export default function Navbar() {
           <Link
             href="/reservations"
             data-navbar-item
-            className="group hidden items-center gap-2 border border-[#B8955A] bg-[#B8955A] px-4 py-3 text-sm font-semibold text-[#11110F] hover:border-[#D0B477] hover:bg-[#D0B477] lg:inline-flex xl:px-6"
+            className="group hidden items-center gap-2 border border-[#B8955A] bg-[#B8955A] px-4 py-3 text-sm font-semibold text-[#11110F] transition-colors hover:border-[#D0B477] hover:bg-[#D0B477] lg:inline-flex xl:px-6"
           >
             Reserve a Table
-            <FiArrowUpRight
-              size={18}
-              aria-hidden="true"
-            />
+            <FiArrowUpRight size={18} aria-hidden="true" />
           </Link>
 
           <button
@@ -139,7 +155,7 @@ export default function Navbar() {
             aria-label="Open navigation menu"
             aria-expanded={isMenuOpen}
             aria-controls="mobile-navigation"
-            className="flex h-11 w-11 shrink-0 items-center justify-center border border-white/15 bg-white/5 text-[#D0B477] hover:border-[#B8955A] hover:bg-white/10 lg:hidden"
+            className="flex h-11 w-11 shrink-0 items-center justify-center border border-white/15 bg-white/5 text-[#D0B477] transition-colors hover:border-[#B8955A] hover:bg-white/10 lg:hidden"
           >
             <FiMenu size={25} />
           </button>

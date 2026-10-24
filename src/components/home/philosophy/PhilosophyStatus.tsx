@@ -6,6 +6,8 @@ export default function PhilosophyStats() {
       {philosophyStats.map((stat) => (
         <div key={stat.value} className="min-w-0">
           <p
+            data-count-up={stat.value === "100%" ? "100" : "45"}
+            data-count-suffix={stat.value === "100%" ? "%" : "-Day"}
             className={`font-serif text-2xl leading-none sm:text-[27px] ${
               stat.value === "100%" ? "text-[#E98765]" : "text-[#D6B77D]"
             }`}
