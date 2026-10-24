@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { useGSAP } from "@gsap/react";
-import { gsap } from "@/lib/gsap";
+import gsap from "gsap";
 import { FiArrowDownRight, FiArrowUpRight, FiX } from "react-icons/fi";
 import type { NavLink } from "../layout/Navbar";
 
@@ -12,6 +12,8 @@ type MobailMenuProps = {
   onClose: () => void;
   links: NavLink[];
 };
+
+gsap.registerPlugin(useGSAP);
 
 export default function MobailMenu({
   isOpen,
@@ -27,9 +29,8 @@ export default function MobailMenu({
 
       closeMenuRef.current = contextSafe(() => {
         const overlay = menuRef.current;
-        const drawer = overlay?.querySelector<HTMLElement>(
-          "[data-menu-drawer]",
-        );
+        const drawer =
+          overlay?.querySelector<HTMLElement>("[data-menu-drawer]");
 
         if (!overlay || !drawer) {
           onClose();
@@ -166,7 +167,7 @@ export default function MobailMenu({
             onClick={closeMenu}
             aria-label="Close navigation menu"
             tabIndex={isOpen ? 0 : -1}
-            className="flex h-11 w-11 items-center justify-center border border-white/15 text-[#D0B477] transition-colors hover:border-[#B8955A] hover:bg-white/5"
+            className="flex h-11 w-11 items-center justify-center border border-white/15 text-[#D0B477] hover:border-[#B8955A] hover:bg-white/5"
           >
             <FiX size={23} />
           </button>
@@ -178,8 +179,8 @@ export default function MobailMenu({
           </p>
 
           <h2 className="mt-3 font-serif text-3xl leading-tight sm:text-4xl">
-            A taste of{" "}
-            <span className="italic text-[#B8955A]">something</span> special.
+            A taste of <span className="italic text-[#B8955A]">something</span>{" "}
+            special.
           </h2>
 
           <p className="mt-3 max-w-xs text-sm leading-6 text-[#B7B1A7]">
@@ -194,7 +195,7 @@ export default function MobailMenu({
                 href={link.href}
                 onClick={closeMenu}
                 tabIndex={isOpen ? 0 : -1}
-                className="group flex items-center justify-between border-b border-white/10 py-4 transition-colors hover:text-[#D0B477]"
+                className="group flex items-center justify-between border-b border-white/10 py-4 hover:text-[#D0B477]"
               >
                 <span className="flex items-baseline gap-4">
                   <span className="font-mono text-[10px] text-[#B8955A]">
@@ -217,7 +218,7 @@ export default function MobailMenu({
             href="/reservations"
             onClick={closeMenu}
             tabIndex={isOpen ? 0 : -1}
-            className="group flex min-h-14 items-center justify-between bg-[#B8955A] px-5 py-4 text-[#11110F] transition-colors hover:bg-[#D0B477]"
+            className="group flex min-h-14 items-center justify-between bg-[#B8955A] px-5 py-4 text-[#11110F] hover:bg-[#D0B477]"
           >
             <span className="text-xs font-semibold uppercase tracking-[0.14em]">
               Reserve a Table
