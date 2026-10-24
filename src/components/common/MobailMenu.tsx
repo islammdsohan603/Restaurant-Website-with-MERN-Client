@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
+import { gsap } from "@/lib/gsap";
 import { FiArrowDownRight, FiArrowUpRight, FiX } from "react-icons/fi";
 import type { NavLink } from "../layout/Navbar";
 
@@ -12,8 +12,6 @@ type MobailMenuProps = {
   onClose: () => void;
   links: NavLink[];
 };
-
-gsap.registerPlugin(useGSAP);
 
 export default function MobailMenu({
   isOpen,

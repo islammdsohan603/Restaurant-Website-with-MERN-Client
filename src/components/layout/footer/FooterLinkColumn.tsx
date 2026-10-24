@@ -25,7 +25,6 @@ export default function FooterLinkColumn({
           <li key={link.label}>
             <Link
               href={link.href}
-              data-footer-link
               className="group inline-flex items-center gap-2 text-sm text-[#C7BFB5] transition-colors duration-300 hover:text-[#D0B477]"
             >
               <span>{link.label}</span>

@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
-import { gsap } from "@/lib/gsap";
+import { gsap, ScrollTrigger } from "@/lib/gsap";
 import MenuCard from "./MenuCard";
 import type { MenuItem } from "../../db/MenuData";
 
@@ -20,46 +20,55 @@ export default function MenuGrid({ items, onAddToOrder }: MenuGridProps) {
       const grid = gridRef.current;
       const cards = grid?.querySelectorAll<HTMLElement>("[data-gsap-card]");
 
-      if (!grid || !cards?.length) {
-        isFirstRender.current = false;
-        return;
-      }
+      if (!grid || !cards?.length) return;
 
-      const shouldAnimate = !window.matchMedia(
-        "(prefers-reduced-motion: reduce)",
-      ).matches;
+      const media = gsap.matchMedia();
+      const refreshFrame = requestAnimationFrame(() => {
+        ScrollTrigger.refresh();
+      });
 
-      if (!shouldAnimate) {
-        isFirstRender.current = false;
-        return;
-      }
+      media.add("(prefers-reduced-motion: no-preference)", () => {
+        if (isFirstRender.current) {
+          isFirstRender.current = false;
+          gsap.fromTo(
+            cards,
+            { autoAlpha: 0, y: 26 },
+            {
+              autoAlpha: 1,
+              y: 0,
+              duration: 0.65,
+              stagger: 0.12,
+              ease: "power3.out",
+              immediateRender: false,
+              scrollTrigger: {
+                trigger: grid,
+                start: "top 84%",
+                once: true,
+              },
+            },
+          );
+        } else {
+          gsap.fromTo(
+            cards,
+            { autoAlpha: 0, y: 20 },
+            {
+              autoAlpha: 1,
+              y: 0,
+              duration: 0.5,
+              stagger: 0.07,
+              ease: "power3.out",
+              overwrite: "auto",
+            },
+          );
+        }
+      });
 
-      if (isFirstRender.current) {
-        isFirstRender.current = false;
-        gsap.from(cards, {
-          autoAlpha: 0,
-          y: 26,
-          duration: 0.65,
-          stagger: 0.12,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: grid,
-            start: "top 84%",
-            once: true,
-          },
-        });
-      } else {
-        gsap.from(cards, {
-          autoAlpha: 0,
-          y: 20,
-          duration: 0.5,
-          stagger: 0.07,
-          ease: "power3.out",
-          overwrite: "auto",
-        });
-      }
+      return () => {
+        cancelAnimationFrame(refreshFrame);
+        media.revert();
+      };
     },
-    { scope: gridRef, dependencies: [items] },
+    { scope: gridRef, dependencies: [items], revertOnUpdate: true },
   );
 
   return (

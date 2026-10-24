@@ -2,10 +2,7 @@
 
 import { useRef, type ReactNode } from "react";
 import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(useGSAP, ScrollTrigger);
+import { gsap, ScrollTrigger } from "@/lib/gsap";
 
 type FooterAnimationsProps = {
   children: ReactNode;
@@ -24,56 +21,40 @@ export default function FooterAnimations({
       if (!container) return;
 
       const media = gsap.matchMedia();
-
-      media.add("(prefers-reduced-motion: no-preference)", () => {
-        const items = gsap.utils.toArray<HTMLElement>(
-          "[data-footer-item]",
-          container,
-        );
-
-        items.forEach((item) => {
-          gsap.fromTo(
-            item,
-            { autoAlpha: 0, y: 30 },
-            {
-              autoAlpha: 1,
-              y: 0,
-              duration: 0.75,
-              ease: "power3.out",
-              scrollTrigger: {
-                trigger: item,
-                start: "top 90%",
-                once: true,
-              },
-            },
-          );
-        });
-
-        const links = gsap.utils.toArray<HTMLElement>(
-          "[data-footer-link]",
-          container,
-        );
-
-        links.forEach((link) => {
-          gsap.fromTo(
-            link,
-            { autoAlpha: 0, x: -10 },
-            {
-              autoAlpha: 1,
-              x: 0,
-              duration: 0.45,
-              ease: "power2.out",
-              scrollTrigger: {
-                trigger: link,
-                start: "top 95%",
-                once: true,
-              },
-            },
-          );
-        });
+      const refreshFrame = requestAnimationFrame(() => {
+        ScrollTrigger.refresh();
       });
 
-      return () => media.revert();
+      media.add("(prefers-reduced-motion: no-preference)", () => {
+        const items = container.querySelectorAll<HTMLElement>(
+          "[data-footer-item]",
+        );
+
+        if (!items.length) return;
+
+        gsap.fromTo(
+          items,
+          { autoAlpha: 0, y: 30 },
+          {
+            autoAlpha: 1,
+            y: 0,
+            duration: 0.75,
+            stagger: 0.12,
+            ease: "power3.out",
+            immediateRender: false,
+            scrollTrigger: {
+              trigger: container,
+              start: "top 88%",
+              once: true,
+            },
+          },
+        );
+      });
+
+      return () => {
+        cancelAnimationFrame(refreshFrame);
+        media.revert();
+      };
     },
     { scope: containerRef },
   );
