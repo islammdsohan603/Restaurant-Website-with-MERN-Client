@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import { FiArrowUpRight, FiPlus, FiStar } from "react-icons/fi";
 import type { MenuItem } from "../../db/MenuData";
@@ -12,7 +14,7 @@ export default function MenuCard({ item, onAddToOrder }: MenuCardProps) {
     <article
       data-gsap-card
       data-gsap-hover="card"
-      className="menu-card group flex h-full flex-col overflow-hidden rounded-xl border border-white/[0.07] bg-[#201F1C] hover:border-[#B8955A]/45 hover:bg-[#25231F]"
+      className="menu-card group flex h-full flex-col overflow-hidden rounded-xl border border-white/[0.07] bg-[#201F1C] transition-colors hover:border-[#B8955A]/45 hover:bg-[#25231F]"
     >
       <div className="relative aspect-[1.45/1] overflow-hidden bg-[#29251F]">
         <Image
@@ -34,7 +36,7 @@ export default function MenuCard({ item, onAddToOrder }: MenuCardProps) {
           type="button"
           aria-label={`View ${item.name}`}
           data-gsap-hover="button"
-          className="absolute right-2.5 top-2.5 flex h-7 w-7 items-center justify-center rounded-full border border-white/15 bg-black/45 text-white hover:border-[#D6B77D] hover:text-[#D6B77D]"
+          className="absolute right-2.5 top-2.5 flex h-7 w-7 items-center justify-center rounded-full border border-white/15 bg-black/45 text-white transition-colors hover:border-[#D6B77D] hover:text-[#D6B77D]"
         >
           <FiArrowUpRight size={14} />
         </button>
@@ -59,7 +61,7 @@ export default function MenuCard({ item, onAddToOrder }: MenuCardProps) {
           </span>
         </div>
 
-        <h3 className="line-clamp-2 min-h-[2.5rem] font-serif text-xl leading-5 text-[#F5F0E8] group-hover:text-[#E5C38B]">
+        <h3 className="line-clamp-2 min-h-[2.5rem] font-serif text-xl leading-5 text-[#F5F0E8] transition-colors group-hover:text-[#E5C38B]">
           {item.name}
         </h3>
 
@@ -71,7 +73,8 @@ export default function MenuCard({ item, onAddToOrder }: MenuCardProps) {
           type="button"
           onClick={() => onAddToOrder?.(item)}
           data-gsap-hover="button"
-          className="mt-4 inline-flex min-h-9 w-full cursor-pointer items-center justify-center gap-2 rounded-md border border-white/[0.06] bg-[#292824] px-3 py-2 text-xm font-semibold uppercase tracking-[0.12em] text-[#E9E3D9] hover:border-[#B8955A]/50 hover:bg-[#B8955A] hover:text-[#171511] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#D6B77D]"
+          data-menu-add
+          className="mt-4 inline-flex min-h-9 w-full cursor-pointer items-center justify-center gap-2 rounded-md border border-white/[0.06] bg-[#292824] px-3 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-[#E9E3D9] transition-colors hover:border-[#B8955A]/50 hover:bg-[#B8955A] hover:text-[#171511] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#D6B77D]"
         >
           <FiPlus size={12} />
           Add to Order

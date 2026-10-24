@@ -15,13 +15,13 @@ export default function HomePage() {
       <section className="relative min-h-[calc(100svh-76px)] overflow-hidden bg-[#11110F] text-[#F5F0E8] lg:min-h-[calc(100svh-90px)]">
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 bg-[radial-linear(ellipse_at_80%_35%,rgba(190,100,43,0.09),transparent_38%),radial-linear(ellipse_at_15%_65%,rgba(130,116,73,0.07),transparent_32%)]"
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_80%_35%,rgba(190,100,43,0.09),transparent_38%),radial-gradient(ellipse_at_15%_65%,rgba(130,116,73,0.07),transparent_32%)]"
         />
 
         <div className="relative mx-auto grid min-h-[calc(100svh-76px)] max-w-[1440px] items-center gap-12 px-5 pb-20 pt-12 sm:px-8 sm:pt-16 lg:min-h-[calc(100svh-90px)] lg:grid-cols-[1fr_0.94fr] lg:gap-14 lg:px-12 lg:pb-20 lg:pt-12 xl:gap-20 xl:px-16">
           <div className="hero-copy relative z-10 max-w-[590px]">
             <div
-              data-hero-item
+              data-hero-eyebrow
               className="mb-7 inline-flex items-center gap-2 rounded-full border border-[#B8955A]/20 bg-[#B8955A]/10 px-3.5 py-2"
             >
               <span className="h-1.5 w-1.5 rounded-full bg-[#D7A56D]" />
@@ -32,15 +32,28 @@ export default function HomePage() {
             </div>
 
             <h1
-              data-hero-item
+              aria-label="A Better Meal Is Waiting."
               className="max-w-[600px] font-serif text-[clamp(3.3rem,6.3vw,5.7rem)] leading-[0.98] tracking-[-0.055em] text-[#F5F0E8]"
             >
-              A Better Meal Is
-              <span className="mt-1 block italic text-[#E66A3C]">Waiting.</span>
+              <span className="inline-block overflow-hidden align-bottom">
+                <span data-hero-word className="inline-block">A</span>
+              </span>{" "}
+              <span className="inline-block overflow-hidden align-bottom">
+                <span data-hero-word className="inline-block">Better</span>
+              </span>{" "}
+              <span className="inline-block overflow-hidden align-bottom">
+                <span data-hero-word className="inline-block">Meal</span>
+              </span>{" "}
+              <span className="inline-block overflow-hidden align-bottom">
+                <span data-hero-word className="inline-block">Is</span>
+              </span>
+              <span className="mt-1 block overflow-hidden italic text-[#E66A3C]">
+                <span data-hero-waiting className="inline-block">Waiting.</span>
+              </span>
             </h1>
 
             <p
-              data-hero-item
+              data-hero-detail
               className="mt-7 max-w-[470px] text-sm leading-7 text-[#B7B1A7] sm:text-base sm:leading-8"
             >
               Discover exceptional flavors, thoughtfully crafted dishes, and
@@ -49,7 +62,7 @@ export default function HomePage() {
             </p>
 
             <div
-              data-hero-item
+              data-hero-detail
               className="mt-8 flex flex-col gap-3 min-[420px]:flex-row"
             >
               <GsapButton href="/menu" variant="primary">
@@ -71,7 +84,7 @@ export default function HomePage() {
             </div>
 
             <div
-              data-hero-item
+              data-hero-detail
               className="mt-9 flex flex-wrap items-center gap-x-5 gap-y-4 border-t border-white/[0.08] pt-6 sm:mt-10 sm:pt-7"
             >
               <div className="flex -space-x-3">
@@ -118,11 +131,12 @@ export default function HomePage() {
                 fill
                 priority
                 sizes="(max-width: 1024px) 100vw, 48vw"
+                data-hero-image
                 data-gsap-hover="image"
                 className="object-cover object-[52%_center]"
               />
 
-              <div className="absolute inset-0 bg-linar-to-t from-black/80 via-black/10 to-black/15" />
+              <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/10 to-black/15" />
 
               <div className="absolute inset-0 bg-linear-to-r from-black/15 via-transparent to-transparent" />
 
@@ -175,6 +189,7 @@ export default function HomePage() {
 
         <a
           href="#spaces"
+          data-hero-detail
           className="absolute bottom-4 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-3 text-center lg:flex"
         >
           <span className="text-[9px] font-medium uppercase tracking-[0.25em] text-[#A8A092]">

@@ -6,7 +6,7 @@ export default function PhilosophyImage() {
   return (
     <div className="group relative w-full">
       {/* Main image */}
-      <div className="relative aspect-[1.18/1] w-full overflow-hidden rounded-2xl border border-[#B8955A]/20 bg-[#201F1C] sm:aspect-[1.3/1] lg:aspect-[1.18/1] xl:aspect-[1.25/1]">
+      <div data-philosophy-image className="relative aspect-[1.18/1] w-full overflow-hidden rounded-2xl border border-[#B8955A]/20 bg-[#201F1C] sm:aspect-[1.3/1] lg:aspect-[1.18/1] xl:aspect-[1.25/1]">
         <Image
           src="/images/chef-philosophy.png"
           alt={winePairing.imageAlt}

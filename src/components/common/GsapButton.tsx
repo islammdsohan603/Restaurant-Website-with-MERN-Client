@@ -13,7 +13,7 @@ export default function GsapButton({
   children,
 }: GsapButtonProps) {
   const baseClasses =
-    "group inline-flex min-h-12 items-center justify-center gap-2.5 border px-5 py-3 text-sm font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#D0B477]";
+    "group inline-flex min-h-12 items-center justify-center gap-2.5 border px-5 py-3 text-sm font-semibold transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#D0B477]";
 
   const variantClasses =
     variant === "primary"

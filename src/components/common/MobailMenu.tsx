@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
+import { gsap } from "@/lib/gsap";
 import { FiArrowDownRight, FiArrowUpRight, FiX } from "react-icons/fi";
 import type { NavLink } from "../layout/Navbar";
 
@@ -12,8 +12,6 @@ type MobailMenuProps = {
   onClose: () => void;
   links: NavLink[];
 };
-
-gsap.registerPlugin(useGSAP);
 
 export default function MobailMenu({
   isOpen,
@@ -168,7 +166,7 @@ export default function MobailMenu({
             onClick={closeMenu}
             aria-label="Close navigation menu"
             tabIndex={isOpen ? 0 : -1}
-            className="flex h-11 w-11 items-center justify-center border border-white/15 text-[#D0B477] hover:border-[#B8955A] hover:bg-white/5"
+            className="flex h-11 w-11 items-center justify-center border border-white/15 text-[#D0B477] transition-colors hover:border-[#B8955A] hover:bg-white/5"
           >
             <FiX size={23} />
           </button>
@@ -196,7 +194,7 @@ export default function MobailMenu({
                 href={link.href}
                 onClick={closeMenu}
                 tabIndex={isOpen ? 0 : -1}
-                className="group flex items-center justify-between border-b border-white/10 py-4 hover:text-[#D0B477]"
+                className="group flex items-center justify-between border-b border-white/10 py-4 transition-colors hover:text-[#D0B477]"
               >
                 <span className="flex items-baseline gap-4">
                   <span className="font-mono text-[10px] text-[#B8955A]">
@@ -219,7 +217,7 @@ export default function MobailMenu({
             href="/reservations"
             onClick={closeMenu}
             tabIndex={isOpen ? 0 : -1}
-            className="group flex min-h-14 items-center justify-between bg-[#B8955A] px-5 py-4 text-[#11110F] hover:bg-[#D0B477]"
+            className="group flex min-h-14 items-center justify-between bg-[#B8955A] px-5 py-4 text-[#11110F] transition-colors hover:bg-[#D0B477]"
           >
             <span className="text-xs font-semibold uppercase tracking-[0.14em]">
               Reserve a Table

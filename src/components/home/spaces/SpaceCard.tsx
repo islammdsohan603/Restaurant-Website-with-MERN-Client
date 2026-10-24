@@ -16,7 +16,7 @@ export default function SpaceCard({ space }: SpaceCardProps) {
     <article
       data-gsap-card
       data-gsap-hover="card"
-      className="group flex h-full flex-col overflow-hidden rounded-xl border border-white/[0.07] bg-[#201F1C] hover:border-[#B8955A]/40"
+      className="group flex h-full flex-col overflow-hidden rounded-xl border border-white/[0.07] bg-[#201F1C] transition-colors hover:border-[#B8955A]/40"
     >
       <Link
         href={space.href}
@@ -43,7 +43,7 @@ export default function SpaceCard({ space }: SpaceCardProps) {
       </Link>
 
       <div className="flex flex-1 flex-col p-4 sm:p-5">
-        <h3 className="font-serif text-xl leading-tight text-[#F2EEE7] group-hover:text-[#E5C38B] sm:text-[22px]">
+        <h3 className="font-serif text-xl leading-tight text-[#F2EEE7] transition-colors group-hover:text-[#E5C38B] sm:text-[22px]">
           {space.title}
         </h3>
 
@@ -53,14 +53,15 @@ export default function SpaceCard({ space }: SpaceCardProps) {
 
         <Link
           href={space.href}
-          className="mt-auto inline-flex w-fit items-center gap-2 pt-5 text-[10px] font-medium uppercase tracking-[0.13em] text-[#D6B77D] hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#D6B77D]"
+          data-gsap-hover="space-action"
+          className="mt-auto inline-flex w-fit items-center gap-2 pt-5 text-[10px] font-medium uppercase tracking-[0.13em] text-[#D6B77D] transition-colors hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#D6B77D]"
         >
           {space.action}
 
           <ActionIcon
             size={14}
             aria-hidden="true"
-            data-gsap-hover="button"
+            data-space-arrow
           />
         </Link>
       </div>
