@@ -48,13 +48,13 @@ export default function PhilosophyContent() {
       {/* Story link */}
       <Link
         href={philosophyContent.storyHref}
-        className="group mt-6 inline-flex w-fit items-center gap-2 py-1 text-[10px] font-medium uppercase tracking-[0.12em] text-[#E7E0D4] transition-colors duration-300 hover:text-[#D6B77D] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#D6B77D]"
+        data-gsap-hover="button"
+        className="group mt-6 inline-flex w-fit items-center gap-2 py-1 text-[10px] font-medium uppercase tracking-[0.12em] text-[#E7E0D4] hover:text-[#D6B77D] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#D6B77D]"
       >
         Read Our Full Story
         <FiArrowRight
           size={15}
           aria-hidden="true"
-          className="transition-transform duration-300 group-hover:translate-x-1"
         />
       </Link>
     </div>

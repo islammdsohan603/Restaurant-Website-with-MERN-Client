@@ -12,7 +12,8 @@ export default function PhilosophyImage() {
           alt={winePairing.imageAlt}
           fill
           sizes="(max-width: 1023px) 100vw, (max-width: 1440px) 50vw, 640px"
-          className="object-cover object-center transition-transform duration-1000 ease-out group-hover:scale-[1.04]"
+          data-gsap-hover="image"
+          className="object-cover object-center"
         />
 
         {/* Image overlay */}
