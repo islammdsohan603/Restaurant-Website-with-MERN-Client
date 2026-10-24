@@ -1,76 +1,64 @@
 "use client";
 
-import { AnimatePresence, motion } from "motion/react";
+import { useRef } from "react";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import MenuCard from "./MenuCard";
 import type { MenuItem } from "../../db/MenuData";
+
+gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 type MenuGridProps = {
   items: MenuItem[];
   onAddToOrder?: (item: MenuItem) => void;
 };
 
-const containerVariants = {
-  hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: 0.14,
-      delayChildren: 0.08,
-    },
-  },
-};
-
-const cardVariants = {
-  hidden: {
-    opacity: 0,
-    y: 32,
-    scale: 0.97,
-  },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: {
-      duration: 0.55,
-      ease: [0.22, 1, 0.36, 1] as const,
-    },
-  },
-  exit: {
-    opacity: 0,
-    y: 12,
-    scale: 0.98,
-    transition: {
-      duration: 0.2,
-    },
-  },
-};
-
 export default function MenuGrid({ items, onAddToOrder }: MenuGridProps) {
+  const gridRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(
+    () => {
+      const grid = gridRef.current;
+      const cards = grid?.querySelectorAll<HTMLElement>("[data-gsap-card]");
+
+      if (!grid || !cards?.length) return;
+
+      const media = gsap.matchMedia();
+
+      media.add("(prefers-reduced-motion: no-preference)", () => {
+        gsap.fromTo(
+          cards,
+          { autoAlpha: 0, y: 26 },
+          {
+            autoAlpha: 1,
+            y: 0,
+            duration: 0.65,
+            stagger: 0.12,
+            ease: "power3.out",
+            immediateRender: false,
+            scrollTrigger: {
+              trigger: grid,
+              start: "top 84%",
+              once: true,
+            },
+          },
+        );
+      });
+
+      return () => media.revert();
+    },
+    { scope: gridRef, dependencies: [items], revertOnUpdate: true },
+  );
+
   return (
-    <motion.div
-      variants={containerVariants}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{
-        once: true,
-        amount: 0.08,
-      }}
-      className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4  "
+    <div
+      ref={gridRef}
+      className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4"
     >
-      <AnimatePresence mode="popLayout">
-        {items.map((item) => (
-          <motion.div
-            key={item.id}
-            variants={cardVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            layout
-            className="min-w-0"
-          >
-            <MenuCard item={item} onAddToOrder={onAddToOrder} />
-          </motion.div>
-        ))}
-      </AnimatePresence>
-    </motion.div>
+      {items.map((item) => (
+        <MenuCard key={item.id} item={item} onAddToOrder={onAddToOrder} />
+      ))}
+    </div>
   );
 }

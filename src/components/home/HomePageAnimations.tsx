@@ -1,6 +1,11 @@
 "use client";
 
-import { useEffect, type ReactNode } from "react";
+import { useRef, type ReactNode } from "react";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 type HomePageAnimationsProps = {
   children: ReactNode;
@@ -9,39 +14,170 @@ type HomePageAnimationsProps = {
 export default function HomePageAnimations({
   children,
 }: HomePageAnimationsProps) {
-  useEffect(() => {
-    const root = document.querySelector<HTMLElement>(
-      "[data-home-animation-root]",
-    );
+  const rootRef = useRef<HTMLDivElement>(null);
+  const { contextSafe } = useGSAP({ scope: rootRef });
 
-    if (!root) return;
+  useGSAP(
+    () => {
+      const root = rootRef.current;
 
-    const items = root.querySelectorAll<HTMLElement>("[data-hero-item]");
+      if (!root) return;
 
-    const visual = root.querySelector<HTMLElement>(".hero-visual");
+      const media = gsap.matchMedia();
+      const cleanups: Array<() => void> = [];
 
-    const reducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
+      media.add("(prefers-reduced-motion: no-preference)", () => {
+        const heroItems = root.querySelectorAll<HTMLElement>("[data-hero-item]");
+        const heroVisual = root.querySelector<HTMLElement>("[data-hero-visual]");
+        const dishCard = root.querySelector<HTMLElement>("[data-gsap-float]");
 
-    if (reducedMotion) return;
+        gsap.fromTo(
+          heroItems,
+          { autoAlpha: 0, x: -32 },
+          {
+            autoAlpha: 1,
+            x: 0,
+            duration: 0.75,
+            stagger: 0.12,
+            ease: "power3.out",
+            delay: 0.12,
+          },
+        );
 
-    items.forEach((item, index) => {
-      item.style.setProperty("--hero-delay", `${index * 120}ms`);
-      item.classList.add("hero-item-animated");
-    });
+        if (heroVisual) {
+          gsap.fromTo(
+            heroVisual,
+            { autoAlpha: 0, x: 36 },
+            {
+              autoAlpha: 1,
+              x: 0,
+              duration: 1,
+              ease: "power3.out",
+              delay: 0.18,
+            },
+          );
+        }
 
-    visual?.classList.add("hero-visual-animated");
+        if (dishCard) {
+          gsap.to(dishCard, {
+            y: -6,
+            duration: 2.8,
+            ease: "sine.inOut",
+            repeat: -1,
+            yoyo: true,
+          });
+        }
 
-    return () => {
-      items.forEach((item) => {
-        item.classList.remove("hero-item-animated");
-        item.style.removeProperty("--hero-delay");
+        root
+          .querySelectorAll<HTMLElement>("[data-gsap-reveal]")
+          .forEach((element) => {
+            gsap.fromTo(
+              element,
+              { autoAlpha: 0, y: 22 },
+              {
+                autoAlpha: 1,
+                y: 0,
+                duration: 0.7,
+                ease: "power3.out",
+                immediateRender: false,
+                scrollTrigger: {
+                  trigger: element,
+                  start: "top 86%",
+                  once: true,
+                },
+              },
+            );
+          });
+
+        root
+          .querySelectorAll<HTMLElement>("[data-gsap-card-group]")
+          .forEach((group) => {
+            const cards = group.querySelectorAll<HTMLElement>("[data-gsap-card]");
+
+            if (!cards.length) return;
+
+            gsap.fromTo(
+              cards,
+              { autoAlpha: 0, y: 26 },
+              {
+                autoAlpha: 1,
+                y: 0,
+                duration: 0.65,
+                stagger: 0.12,
+                ease: "power3.out",
+                immediateRender: false,
+                scrollTrigger: {
+                  trigger: group,
+                  start: "top 84%",
+                  once: true,
+                },
+              },
+            );
+          });
+
+        const animateHover = (
+          event: PointerEvent,
+          isEntering: boolean,
+        ) => {
+          let target =
+            event.target instanceof HTMLElement ? event.target : null;
+          const relatedTarget =
+            event.relatedTarget instanceof Node ? event.relatedTarget : null;
+
+          while (target && root.contains(target)) {
+            if (
+              target.hasAttribute("data-gsap-hover") &&
+              !(relatedTarget && target.contains(relatedTarget))
+            ) {
+              gsap.to(target, {
+                y: isEntering
+                  ? target.dataset.gsapHover === "card"
+                    ? -4
+                    : -2
+                  : 0,
+                scale: isEntering
+                  ? target.dataset.gsapHover === "image"
+                    ? 1.04
+                    : 1.015
+                  : 1,
+                duration: isEntering ? 0.28 : 0.32,
+                ease: "power2.out",
+              });
+            }
+
+            target = target.parentElement;
+          }
+        };
+        const onPointerOver = contextSafe((event: PointerEvent) => {
+          animateHover(event, true);
+        });
+        const onPointerOut = contextSafe((event: PointerEvent) => {
+          animateHover(event, false);
+        });
+
+        root.addEventListener("pointerover", onPointerOver);
+        root.addEventListener("pointerout", onPointerOut);
+        cleanups.push(() => {
+          root.removeEventListener("pointerover", onPointerOver);
+          root.removeEventListener("pointerout", onPointerOut);
+        });
+
+        return () => {
+          cleanups.splice(0).forEach((cleanup) => cleanup());
+        };
       });
 
-      visual?.classList.remove("hero-visual-animated");
-    };
-  }, []);
+      return () => {
+        media.revert();
+        cleanups.splice(0).forEach((cleanup) => cleanup());
+      };
+    },
+    { scope: rootRef },
+  );
 
-  return <div data-home-animation-root>{children}</div>;
+  return (
+    <div ref={rootRef} data-home-animation-root>
+      {children}
+    </div>
+  );
 }

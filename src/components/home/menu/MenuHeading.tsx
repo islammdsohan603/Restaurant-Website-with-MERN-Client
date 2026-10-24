@@ -1,12 +1,7 @@
-import { motion } from "motion/react";
-
 export default function MenuHeading() {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.5 }}
-      transition={{ duration: 0.65, ease: "easeOut" }}
+    <div
+      data-gsap-reveal
       className="mx-auto mb-8 max-w-2xl text-center sm:mb-10"
     >
       <p className="mb-3 text-[9px] font-semibold uppercase tracking-[0.3em] text-[#D6B77D] sm:text-[10px]">
@@ -24,6 +19,6 @@ export default function MenuHeading() {
         An evolving dialogue between fire, season and simplicity. Discover the
         ingredients, precision and craftsmanship behind each plate.
       </p>
-    </motion.div>
+    </div>
   );
 }

@@ -81,12 +81,13 @@ export default function MenuSection() {
         <div className="mt-9 flex justify-center sm:mt-12">
           <a
             href="/menu"
-            className="group inline-flex min-h-11 items-center gap-3 border border-[#B8955A]/35 px-5 py-3 text-xm font-semibold uppercase tracking-[0.15em] text-[#E5C38B] transition-colors duration-300 hover:border-[#D6B77D] hover:bg-[#B8955A]/10"
+            data-gsap-hover="button"
+            className="group inline-flex min-h-11 items-center gap-3 border border-[#B8955A]/35 px-5 py-3 text-xm font-semibold uppercase tracking-[0.15em] text-[#E5C38B] hover:border-[#D6B77D] hover:bg-[#B8955A]/10"
           >
             View Full Seasonal Tasting Menu
             <FiArrowRight
               size={14}
-              className="transition-transform duration-300 group-hover:translate-x-1"
+              aria-hidden="true"
             />
           </a>
         </div>

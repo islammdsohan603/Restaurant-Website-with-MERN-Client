@@ -8,12 +8,10 @@ import {
   FiStar,
 } from "react-icons/fi";
 
-import HomePageAnimations from "./HomePageAnimations";
 import GsapButton from "../common/GsapButton";
 
 export default function HomePage() {
   return (
-    <HomePageAnimations>
       <section className="relative min-h-[calc(100svh-76px)] overflow-hidden bg-[#11110F] text-[#F5F0E8] lg:min-h-[calc(100svh-90px)]">
         <div
           aria-hidden="true"
@@ -26,7 +24,7 @@ export default function HomePage() {
               data-hero-item
               className="mb-7 inline-flex items-center gap-2 rounded-full border border-[#B8955A]/20 bg-[#B8955A]/10 px-3.5 py-2"
             >
-              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#D7A56D]" />
+              <span className="h-1.5 w-1.5 rounded-full bg-[#D7A56D]" />
 
               <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#D7B77D]">
                 Michelin Guide 2025 Recognized
@@ -58,7 +56,7 @@ export default function HomePage() {
                 Explore Our Menu
                 <FiArrowRight
                   size={17}
-                  className="transition-transform duration-300 group-hover:translate-x-1"
+                  data-gsap-hover="button"
                 />
               </GsapButton>
 
@@ -67,7 +65,7 @@ export default function HomePage() {
                 Reserve a Table
                 <FiArrowUpRight
                   size={15}
-                  className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                  data-gsap-hover="button"
                 />
               </GsapButton>
             </div>
@@ -112,7 +110,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="hero-visual relative mx-auto w-full max-w-[520px] lg:ml-auto lg:mr-0 lg:max-w-none">
+          <div data-hero-visual className="hero-visual relative mx-auto w-full max-w-[520px] lg:ml-auto lg:mr-0 lg:max-w-none">
             <div className="relative aspect-[4/4.7] overflow-hidden rounded-xl border border-white/10 bg-[#211A14] shadow-[0_25px_80px_rgba(0,0,0,0.38)] sm:aspect-[4/4.3] lg:aspect-[0.88/1]">
               <Image
                 src="/ChefImage.png"
@@ -120,7 +118,8 @@ export default function HomePage() {
                 fill
                 priority
                 sizes="(max-width: 1024px) 100vw, 48vw"
-                className="object-cover object-[52%_center] transition-transform duration-700 hover:scale-[1.04]"
+                data-gsap-hover="image"
+                className="object-cover object-[52%_center]"
               />
 
               <div className="absolute inset-0 bg-linar-to-t from-black/80 via-black/10 to-black/15" />
@@ -135,7 +134,7 @@ export default function HomePage() {
                 </span>
               </div>
 
-              <div className="dish-card absolute bottom-4 left-4 right-4 max-w-[310px] rounded-lg border border-[#B8955A]/25 bg-[#171511]/90 p-4 shadow-xl backdrop-blur-xl sm:bottom-6 sm:left-6 sm:p-5">
+              <div data-gsap-float className="dish-card absolute bottom-4 left-4 right-4 max-w-[310px] rounded-lg border border-[#B8955A]/25 bg-[#171511]/90 p-4 shadow-xl backdrop-blur-xl sm:bottom-6 sm:left-6 sm:p-5">
                 <div className="flex items-center gap-2 text-[#D7B77D]">
                   <FiStar size={12} fill="currentColor" />
 
@@ -182,9 +181,8 @@ export default function HomePage() {
             Scroll to discover
           </span>
 
-          <span className="h-7 w-px origin-top animate-pulse bg-gradient-to-b from-[#B8955A] to-transparent" />
+          <span className="h-7 w-px origin-top bg-gradient-to-b from-[#B8955A] to-transparent" />
         </a>
       </section>
-    </HomePageAnimations>
   );
 }
