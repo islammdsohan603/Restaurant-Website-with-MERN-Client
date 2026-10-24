@@ -24,31 +24,36 @@ export default function Navbar() {
   const headerRef = useRef<HTMLElement>(null);
 
   useGSAP(
-    () => {
+    (_, contextSafe) => {
       const header = headerRef.current;
       const items = header?.querySelectorAll<HTMLElement>("[data-navbar-item]");
 
-      if (!header || !items?.length) return;
+      if (!header || !items?.length || !contextSafe) return;
 
       const media = gsap.matchMedia();
       media.add("(prefers-reduced-motion: no-preference)", () => {
-        gsap.from(header, {
-          autoAlpha: 0,
-          y: -14,
-          duration: 0.55,
-          ease: "power3.out",
-        });
-        gsap.from(items, {
-          autoAlpha: 0,
-          y: -8,
-          duration: 0.5,
-          stagger: 0.08,
-          delay: 0.08,
-          ease: "power3.out",
-        });
+        gsap
+          .timeline()
+          .from(header, {
+            autoAlpha: 0,
+            y: -14,
+            duration: 0.55,
+            ease: "power3.out",
+          })
+          .from(
+            items,
+            {
+              autoAlpha: 0,
+              y: -8,
+              duration: 0.5,
+              stagger: 0.08,
+              ease: "power3.out",
+            },
+            "-=0.25",
+          );
       });
 
-      const setScrolledStyle = (scrolled: boolean) => {
+      const setScrolledStyle = contextSafe((scrolled: boolean) => {
         const reducedMotion = window.matchMedia(
           "(prefers-reduced-motion: reduce)",
         ).matches;
@@ -63,11 +68,12 @@ export default function Navbar() {
           ease: "power2.out",
           overwrite: "auto",
         });
-      };
+      });
+
+      setScrolledStyle(window.scrollY > 50);
 
       ScrollTrigger.create({
-        trigger: document.documentElement,
-        start: "top -50px",
+        start: 50,
         onEnter: () => setScrolledStyle(true),
         onLeaveBack: () => setScrolledStyle(false),
       });

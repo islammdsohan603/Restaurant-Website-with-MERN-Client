@@ -29,7 +29,6 @@ export default function FooterSocials() {
           target="_blank"
           rel="noopener noreferrer"
           aria-label={`Visit our ${label}`}
-          data-footer-link
           className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-[#B7B1A7] transition-all duration-300 hover:-translate-y-1 hover:border-[#B8955A] hover:text-[#D0B477]"
         >
           <Icon size={17} aria-hidden="true" />

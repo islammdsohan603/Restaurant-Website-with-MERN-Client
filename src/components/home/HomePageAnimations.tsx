@@ -2,7 +2,7 @@
 
 import { useRef, type ReactNode } from "react";
 import { useGSAP } from "@gsap/react";
-import { gsap } from "@/lib/gsap";
+import { gsap, ScrollTrigger } from "@/lib/gsap";
 
 type HomePageAnimationsProps = {
   children: ReactNode;
@@ -20,6 +20,9 @@ export default function HomePageAnimations({
       if (!root || !contextSafe) return;
 
       const media = gsap.matchMedia();
+      const refreshFrame = requestAnimationFrame(() => {
+        ScrollTrigger.refresh();
+      });
 
       media.add("(prefers-reduced-motion: no-preference)", () => {
         const heroEyebrow = root.querySelector<HTMLElement>(
@@ -86,15 +89,20 @@ export default function HomePageAnimations({
         }
 
         if (heroVisual) {
-          heroTimeline.from(
+          heroTimeline.fromTo(
             heroVisual,
             {
               autoAlpha: 0,
               x: 36,
+            },
+            {
+              autoAlpha: 1,
+              x: 0,
               duration: 0.9,
               ease: "power3.out",
+              immediateRender: false,
             },
-            0.2,
+            ">-=0.12",
           );
         }
 
@@ -129,17 +137,24 @@ export default function HomePageAnimations({
 
         root.querySelectorAll<HTMLElement>("[data-gsap-reveal]").forEach(
           (element) => {
-            gsap.from(element, {
-              autoAlpha: 0,
-              y: 22,
-              duration: 0.7,
-              ease: "power3.out",
-              scrollTrigger: {
-                trigger: element,
-                start: "top 86%",
-                once: true,
+            if (element.querySelector("[data-gsap-card]")) return;
+
+            gsap.fromTo(
+              element,
+              { autoAlpha: 0, y: 22 },
+              {
+                autoAlpha: 1,
+                y: 0,
+                duration: 0.7,
+                ease: "power3.out",
+                immediateRender: false,
+                scrollTrigger: {
+                  trigger: element,
+                  start: "top 86%",
+                  once: true,
+                },
               },
-            });
+            );
           },
         );
 
@@ -151,50 +166,65 @@ export default function HomePageAnimations({
 
             if (!cards.length) return;
 
-            gsap.from(cards, {
-              autoAlpha: 0,
-              y: 26,
-              duration: 0.65,
-              stagger: 0.12,
-              ease: "power3.out",
-              scrollTrigger: {
-                trigger: group,
-                start: "top 84%",
-                once: true,
+            gsap.fromTo(
+              cards,
+              { autoAlpha: 0, y: 26 },
+              {
+                autoAlpha: 1,
+                y: 0,
+                duration: 0.65,
+                stagger: 0.12,
+                ease: "power3.out",
+                immediateRender: false,
+                scrollTrigger: {
+                  trigger: group,
+                  start: "top 84%",
+                  once: true,
+                },
               },
-            });
+            );
           });
 
         const philosophyImage = root.querySelector<HTMLElement>(
           "[data-philosophy-image]",
         );
         if (philosophyImage) {
-          gsap.from(philosophyImage, {
-            clipPath: "inset(0 100% 0 0)",
-            duration: 1,
-            ease: "power3.inOut",
-            scrollTrigger: {
-              trigger: philosophyImage,
-              start: "top 82%",
-              once: true,
+          gsap.fromTo(
+            philosophyImage,
+            { clipPath: "inset(0 100% 0 0)" },
+            {
+              clipPath: "inset(0 0% 0 0)",
+              duration: 1,
+              ease: "power3.inOut",
+              immediateRender: false,
+              scrollTrigger: {
+                trigger: philosophyImage,
+                start: "top 82%",
+                once: true,
+              },
             },
-          });
+          );
         }
 
         const quoteBorder = root.querySelector<HTMLElement>(
           "[data-philosophy-quote-border]",
         );
         if (quoteBorder) {
-          gsap.from(quoteBorder, {
-            scaleY: 0,
-            duration: 0.7,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: quoteBorder,
-              start: "top 86%",
-              once: true,
+          gsap.fromTo(
+            quoteBorder,
+            { scaleY: 0 },
+            {
+              scaleY: 1,
+              duration: 0.7,
+              ease: "power3.out",
+              immediateRender: false,
+              scrollTrigger: {
+                trigger: quoteBorder,
+                start: "top 86%",
+                once: true,
+              },
             },
-          });
+          );
         }
 
         root.querySelectorAll<HTMLElement>("[data-count-up]").forEach((el) => {
@@ -219,6 +249,58 @@ export default function HomePageAnimations({
           });
         });
 
+        const animateHover = (
+          target: HTMLElement,
+          entering: boolean,
+          relatedTarget: Node | null,
+        ) => {
+          let current: HTMLElement | null = target;
+
+          while (current && root.contains(current)) {
+            if (!(relatedTarget && current.contains(relatedTarget))) {
+              if (current.dataset.gsapHover === "space-action") {
+                const arrow = current.querySelector("[data-space-arrow]");
+                if (arrow) {
+                  gsap.to(arrow, {
+                    x: entering ? 4 : 0,
+                    duration: 0.25,
+                    ease: "power2.out",
+                    overwrite: "auto",
+                  });
+                }
+              } else {
+                const hoverVars: gsap.TweenVars = {
+                  y: entering
+                    ? current.dataset.gsapHover === "card"
+                      ? -4
+                      : -2
+                    : 0,
+                  duration: entering ? 0.28 : 0.3,
+                  ease: "power2.out",
+                  overwrite: "auto",
+                };
+
+                if (!current.hasAttribute("data-menu-add")) {
+                  hoverVars.scale = entering
+                    ? current.dataset.gsapHover === "image"
+                      ? 1.06
+                      : current.dataset.gsapHover === "button"
+                        ? 1.015
+                        : 1
+                    : 1;
+                }
+
+                gsap.to(current, hoverVars);
+              }
+            }
+
+            current =
+              current.parentElement?.closest<HTMLElement>(
+                "[data-gsap-hover]",
+              ) ?? null;
+          }
+        };
+
         const onPointerOver = contextSafe((event: PointerEvent) => {
           const eventTarget =
             event.target instanceof Element ? event.target : null;
@@ -226,41 +308,9 @@ export default function HomePageAnimations({
           const relatedTarget =
             event.relatedTarget instanceof Node ? event.relatedTarget : null;
 
-          if (
-            !target ||
-            !root.contains(target) ||
-            (relatedTarget && target.contains(relatedTarget))
-          ) {
-            return;
+          if (target && root.contains(target)) {
+            animateHover(target, true, relatedTarget);
           }
-
-          if (target.dataset.gsapHover === "space-action") {
-            const arrow = target.querySelector("[data-space-arrow]");
-            if (arrow) {
-              gsap.to(arrow, {
-                x: 4,
-                duration: 0.25,
-                ease: "power2.out",
-                overwrite: "auto",
-              });
-            }
-            return;
-          }
-
-          gsap.to(target, {
-            y: target.dataset.gsapHover === "card" ? -4 : -2,
-            scale:
-              target.dataset.gsapHover === "image"
-                ? 1.06
-                : target.dataset.gsapHover === "button"
-                  ? target.hasAttribute("data-menu-add")
-                    ? 1
-                    : 1.015
-                  : 1,
-            duration: 0.28,
-            ease: "power2.out",
-            overwrite: "auto",
-          });
         });
 
         const onPointerOut = contextSafe((event: PointerEvent) => {
@@ -270,34 +320,9 @@ export default function HomePageAnimations({
           const relatedTarget =
             event.relatedTarget instanceof Node ? event.relatedTarget : null;
 
-          if (
-            !target ||
-            !root.contains(target) ||
-            (relatedTarget && target.contains(relatedTarget))
-          ) {
-            return;
+          if (target && root.contains(target)) {
+            animateHover(target, false, relatedTarget);
           }
-
-          if (target.dataset.gsapHover === "space-action") {
-            const arrow = target.querySelector("[data-space-arrow]");
-            if (arrow) {
-              gsap.to(arrow, {
-                x: 0,
-                duration: 0.25,
-                ease: "power2.out",
-                overwrite: "auto",
-              });
-            }
-            return;
-          }
-
-          gsap.to(target, {
-            y: 0,
-            scale: 1,
-            duration: 0.3,
-            ease: "power2.out",
-            overwrite: "auto",
-          });
         });
 
         const onClick = contextSafe((event: MouseEvent) => {
@@ -326,7 +351,10 @@ export default function HomePageAnimations({
         };
       });
 
-      return () => media.revert();
+      return () => {
+        cancelAnimationFrame(refreshFrame);
+        media.revert();
+      };
     },
     { scope: rootRef },
   );

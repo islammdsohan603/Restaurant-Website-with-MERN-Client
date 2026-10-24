@@ -125,16 +125,20 @@ export default function HomePage() {
 
           <div data-hero-visual className="hero-visual relative mx-auto w-full max-w-[520px] lg:ml-auto lg:mr-0 lg:max-w-none">
             <div className="relative aspect-[4/4.7] overflow-hidden rounded-xl border border-white/10 bg-[#211A14] shadow-[0_25px_80px_rgba(0,0,0,0.38)] sm:aspect-[4/4.3] lg:aspect-[0.88/1]">
-              <Image
-                src="/ChefImage.png"
-                alt="A chef carefully preparing a signature fine-dining dish"
-                fill
-                priority
-                sizes="(max-width: 1024px) 100vw, 48vw"
-                data-hero-image
+              <div
                 data-gsap-hover="image"
-                className="object-cover object-[52%_center]"
-              />
+                className="absolute inset-0 overflow-hidden"
+              >
+                <Image
+                  src="/ChefImage.png"
+                  alt="A chef carefully preparing a signature fine-dining dish"
+                  fill
+                  priority
+                  sizes="(max-width: 1024px) 100vw, 48vw"
+                  data-hero-image
+                  className="object-cover object-[52%_center]"
+                />
+              </div>
 
               <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/10 to-black/15" />
 
