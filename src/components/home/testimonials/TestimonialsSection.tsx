@@ -1,5 +1,7 @@
 "use client";
 
+import "./testimonials.css";
+
 type Testimonial = {
   id: number;
   name: string;

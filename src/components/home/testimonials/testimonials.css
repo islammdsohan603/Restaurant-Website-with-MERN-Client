@@ -1,0 +1,237 @@
+/* ================================
+   TESTIMONIAL SECTION
+================================ */
+
+.testimonials-section {
+  position: relative;
+  overflow: hidden;
+  padding: 76px 0 78px;
+  background: #11110f;
+  color: #f5f0e8;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+/* Heading */
+
+.testimonials-heading {
+  text-align: center;
+  padding: 0 20px;
+  margin-bottom: 48px;
+}
+
+.testimonials-eyebrow {
+  display: block;
+  margin-bottom: 12px;
+  color: #d0b477;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+}
+
+.testimonials-heading h2 {
+  margin: 0;
+  color: #f5f0e8;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(27px, 3.2vw, 34px);
+  font-weight: 400;
+  line-height: 1.25;
+  letter-spacing: -0.035em;
+}
+
+/* Marquee */
+
+.testimonial-marquee {
+  width: 100%;
+  overflow: hidden;
+}
+
+.testimonial-track {
+  display: flex;
+  width: max-content;
+  animation: testimonial-scroll 42s linear infinite;
+  will-change: transform;
+}
+
+/* Pause when hovering or keyboard-focusing */
+
+.testimonial-marquee:hover .testimonial-track,
+.testimonial-marquee:focus-within .testimonial-track {
+  animation-play-state: paused;
+}
+
+/* Each group has identical width */
+
+.testimonial-group {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: stretch;
+  gap: 24px;
+  padding-right: 24px;
+}
+
+/* Cards */
+
+.testimonial-card {
+  position: relative;
+  display: flex;
+  flex: 0 0 277px;
+  flex-direction: column;
+  min-height: 248px;
+  padding: 24px 25px;
+  border: 1px solid rgba(255, 255, 255, 0.045);
+  border-radius: 11px;
+  background: #20201e;
+  transition:
+    border-color 0.3s ease,
+    background-color 0.3s ease,
+    transform 0.3s ease;
+}
+
+.testimonial-card:hover {
+  border-color: rgba(208, 180, 119, 0.3);
+  background: #252522;
+}
+
+.testimonial-card-featured {
+  border-color: rgba(208, 180, 119, 0.2);
+}
+
+/* Editor badge */
+
+.testimonial-badge {
+  position: absolute;
+  top: -10px;
+  right: 19px;
+  padding: 3px 12px;
+  border-radius: 20px;
+  background: #e5c17f;
+  color: #171510;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+/* Stars */
+
+.testimonial-stars {
+  margin-bottom: 13px;
+  color: #d9b77a;
+  font-size: 14px;
+  letter-spacing: 2px;
+}
+
+/* Review */
+
+.testimonial-review {
+  flex: 1;
+  margin: 0;
+  color: #e4ded3;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 13px;
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.55;
+}
+
+/* Divider */
+
+.testimonial-divider {
+  height: 1px;
+  width: 100%;
+  margin: 20px 0 15px;
+  background: rgba(255, 255, 255, 0.055);
+}
+
+/* Author */
+
+.testimonial-author {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+.testimonial-avatar {
+  display: flex;
+  flex: 0 0 32px;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #383835;
+  color: #e5c17f;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.testimonial-author-info {
+  min-width: 0;
+}
+
+.testimonial-author-info h3 {
+  margin: 0 0 5px;
+  color: #f5f0e8;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.testimonial-author-info p {
+  margin: 0;
+  color: #d0b477;
+  font-size: 8px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+}
+
+/* Infinite scroll */
+
+@keyframes testimonial-scroll {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Responsive */
+
+@media (max-width: 640px) {
+  .testimonials-section {
+    padding: 62px 0;
+  }
+
+  .testimonials-heading {
+    margin-bottom: 38px;
+  }
+
+  .testimonial-group {
+    gap: 16px;
+    padding-right: 16px;
+  }
+
+  .testimonial-card {
+    flex-basis: min(280px, 82vw);
+    min-height: 235px;
+    padding: 22px;
+  }
+
+  .testimonial-track {
+    animation-duration: 35s;
+  }
+}
+
+/* Accessibility */
+
+@media (prefers-reduced-motion: reduce) {
+  .testimonial-track {
+    animation: none;
+    transform: none;
+  }
+
+  .testimonial-marquee {
+    overflow-x: auto;
+  }
+}
