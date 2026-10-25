@@ -15,7 +15,7 @@ export default function HomePage() {
       <section className="relative min-h-[calc(100svh-76px)] overflow-hidden bg-[#11110F] text-[#F5F0E8] lg:min-h-[calc(100svh-90px)]">
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_80%_35%,rgba(190,100,43,0.09),transparent_38%),radial-gradient(ellipse_at_15%_65%,rgba(130,116,73,0.07),transparent_32%)]"
+          className="pointer-events-none absolute inset-0 bg-[radial-linear(ellipse_at_80%_35%,rgba(190,100,43,0.09),transparent_38%),radial-linear(ellipse_at_15%_65%,rgba(130,116,73,0.07),transparent_32%)]"
         />
 
         <div className="relative mx-auto grid min-h-[calc(100svh-76px)] max-w-[1440px] items-center gap-12 px-5 pb-20 pt-12 sm:px-8 sm:pt-16 lg:min-h-[calc(100svh-90px)] lg:grid-cols-[1fr_0.94fr] lg:gap-14 lg:px-12 lg:pb-20 lg:pt-12 xl:gap-20 xl:px-16">
@@ -140,7 +140,11 @@ export default function HomePage() {
                 />
               </div>
 
+  development
               <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/10 to-black/15" />
+ 
+              <div className="absolute inset-0 bg-linar-to-t from-black/80 via-black/10 to-black/15" />
+  main
 
               <div className="absolute inset-0 bg-linear-to-r from-black/15 via-transparent to-transparent" />
 

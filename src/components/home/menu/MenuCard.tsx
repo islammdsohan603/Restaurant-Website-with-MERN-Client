@@ -1,3 +1,4 @@
+
 "use client";
 
 import Image from "next/image";
@@ -9,12 +10,15 @@ type MenuCardProps = {
   onAddToOrder?: (item: MenuItem) => void;
 };
 
-export default function MenuCard({ item, onAddToOrder }: MenuCardProps) {
+export default function MenuCard({
+  item,
+  onAddToOrder,
+}: MenuCardProps) {
   return (
     <article
       data-gsap-card
       data-gsap-hover="card"
-      className="menu-card group flex h-full flex-col overflow-hidden rounded-xl border border-white/[0.07] bg-[#201F1C] transition-colors hover:border-[#B8955A]/45 hover:bg-[#25231F]"
+      className="menu-card group flex h-full flex-col overflow-hidden rounded-xl border border-white/[0.07] bg-[#201F1C] transition-[border-color,background-color] duration-300 hover:border-[#B8955A]/45 hover:bg-[#25231F]"
     >
       <div className="relative aspect-[1.45/1] overflow-hidden bg-[#29251F]">
         <Image
@@ -23,7 +27,7 @@ export default function MenuCard({ item, onAddToOrder }: MenuCardProps) {
           fill
           sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, (max-width: 1279px) 33vw, 25vw"
           data-gsap-hover="image"
-          className="object-cover"
+          className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
         />
 
         <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/50 via-transparent to-black/10" />

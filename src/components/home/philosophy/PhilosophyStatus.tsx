@@ -1,3 +1,4 @@
+
 import { philosophyStats } from "../../db/PhilosophyData";
 
 export default function PhilosophyStats() {

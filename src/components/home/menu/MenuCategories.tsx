@@ -1,3 +1,4 @@
+
 import type { MenuCategory } from "../../db/MenuData";
 
 type MenuCategoriesProps = {
@@ -27,7 +28,7 @@ export default function MenuCategories({
             aria-pressed={isActive}
             onClick={() => onCategoryChange(category)}
             data-gsap-hover="button"
-            className={`shrink-0 cursor-pointer rounded-full border px-3.5 py-2 text-xs font-semibold uppercase tracking-[0.1em] transition-colors sm:px-4 ${
+            className={`shrink-0 cursor-pointer rounded-full border px-3.5 py-2 text-xs font-semibold uppercase tracking-[0.1em] transition-colors duration-300 sm:px-4 ${
               isActive
                 ? "border-[#E66A3C] bg-[#E66A3C] text-[#171511]"
                 : "border-white/[0.09] bg-[#242320] text-[#C4BFB5] hover:border-[#B8955A]/60 hover:text-[#E5C38B]"

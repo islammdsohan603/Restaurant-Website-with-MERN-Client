@@ -1,3 +1,4 @@
+
 import PhilosophyImage from "./PhilosophyImage";
 import PhilosophyContent from "./PhilosophyContent";
 
@@ -18,18 +19,12 @@ export default function PhilosophySection() {
         {/* Equal-width image and content columns */}
         <div className="grid grid-cols-1 items-center gap-10 md:grid-cols-1 md:gap-12 lg:grid-cols-2 lg:gap-12 xl:gap-16">
           {/* Left: Image */}
-          <div
-            data-gsap-reveal
-            className="min-w-0 w-full"
-          >
+          <div data-gsap-reveal className="min-w-0 w-full">
             <PhilosophyImage />
           </div>
 
           {/* Right: Content */}
-          <div
-            data-gsap-reveal
-            className="min-w-0 w-full"
-          >
+          <div data-gsap-reveal className="min-w-0 w-full">
             <PhilosophyContent />
           </div>
         </div>
