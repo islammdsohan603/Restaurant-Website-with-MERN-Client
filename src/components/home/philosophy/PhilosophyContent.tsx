@@ -1,3 +1,4 @@
+
 import Link from "next/link";
 import { FiArrowRight } from "react-icons/fi";
 
@@ -22,7 +23,14 @@ export default function PhilosophyContent() {
         </span>
       </h2>
 
-      <blockquote className="mt-5 border-l border-[#B8955A] pl-4 sm:mt-6 sm:pl-5">
+      {/* Chef's Philosophy Quote */}
+      <blockquote className="relative mt-5 pl-4 sm:mt-6 sm:pl-5">
+        <span
+          aria-hidden="true"
+          data-philosophy-quote-border
+          className="absolute inset-y-0 left-0 w-px origin-top bg-[#B8955A]"
+        />
+
         <p className="max-w-[520px] font-serif text-lg italic leading-7 text-[#D1C9BC] sm:text-base">
           &ldquo;{philosophyContent.quote}&rdquo;
         </p>
@@ -36,7 +44,9 @@ export default function PhilosophyContent() {
             —
           </span>
 
-          <span className="text-[#AAA397]">{philosophyContent.role}</span>
+          <span className="text-[#AAA397]">
+            {philosophyContent.role}
+          </span>
         </footer>
       </blockquote>
 
@@ -48,9 +58,11 @@ export default function PhilosophyContent() {
       {/* Story link */}
       <Link
         href={philosophyContent.storyHref}
+        data-gsap-hover="button"
         className="group mt-6 inline-flex w-fit items-center gap-2 py-1 text-[10px] font-medium uppercase tracking-[0.12em] text-[#E7E0D4] transition-colors duration-300 hover:text-[#D6B77D] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#D6B77D]"
       >
         Read Our Full Story
+
         <FiArrowRight
           size={15}
           aria-hidden="true"

@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "motion/react";
 import SpaceCard from "./SpaceCard";
 import { spaces } from "../../db/SpaceDate";
 
@@ -17,11 +16,8 @@ export default function SpacesSection() {
       />
 
       <div className="relative mx-auto max-w-[1440px] px-5 sm:px-8 lg:px-12 xl:px-16">
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.25 }}
-          transition={{ duration: 0.7, ease: "easeOut" }}
+        <div
+          data-gsap-reveal
           className="mb-10 grid gap-5 sm:mb-12 lg:grid-cols-[1.2fr_0.8fr] lg:items-end lg:gap-12"
         >
           <div>
@@ -41,15 +37,18 @@ export default function SpacesSection() {
             Choose your ambiance across our historic townhouse, with each
             environment designed for a distinct dining experience.
           </p>
-        </motion.div>
+        </div>
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 xl:gap-5">
-          {spaces.map((space, index) => (
-            <SpaceCard key={space.id} space={space} index={index} />
+        <div
+          data-gsap-card-group
+          className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 xl:gap-5"
+        >
+          {spaces.map((space) => (
+            <SpaceCard key={space.id} space={space} />
           ))}
         </div>
 
-        <div className="mt-10 h-px origin-left bg-linear-to-r from-[#B8955A]/40 via-white/[0.08] to-transparent sm:mt-12" />
+        <div data-gsap-reveal className="mt-10 h-px origin-left bg-linear-to-r from-[#B8955A]/40 via-white/[0.08] to-transparent sm:mt-12" />
       </div>
     </section>
   );

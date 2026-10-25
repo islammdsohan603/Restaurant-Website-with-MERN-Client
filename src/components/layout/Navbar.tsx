@@ -1,8 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useGSAP } from "@gsap/react";
+import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { FiArrowUpRight, FiMenu } from "react-icons/fi";
 import MobailMenu from "../common/MobailMenu";
 
@@ -19,10 +21,74 @@ export type NavLink = (typeof navLinks)[number];
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname();
+  const headerRef = useRef<HTMLElement>(null);
+
+  useGSAP(
+    (_, contextSafe) => {
+      const header = headerRef.current;
+      const items = header?.querySelectorAll<HTMLElement>("[data-navbar-item]");
+
+      if (!header || !items?.length || !contextSafe) return;
+
+      const media = gsap.matchMedia();
+      media.add("(prefers-reduced-motion: no-preference)", () => {
+        gsap
+          .timeline()
+          .from(header, {
+            autoAlpha: 0,
+            y: -14,
+            duration: 0.55,
+            ease: "power3.out",
+          })
+          .from(
+            items,
+            {
+              autoAlpha: 0,
+              y: -8,
+              duration: 0.5,
+              stagger: 0.08,
+              ease: "power3.out",
+            },
+            "-=0.25",
+          );
+      });
+
+      const setScrolledStyle = contextSafe((scrolled: boolean) => {
+        const reducedMotion = window.matchMedia(
+          "(prefers-reduced-motion: reduce)",
+        ).matches;
+
+        gsap.to(header, {
+          backgroundColor: scrolled
+            ? "rgba(17, 17, 15, 0.9)"
+            : "rgba(17, 17, 15, 0.95)",
+          backdropFilter: scrolled ? "blur(18px)" : "blur(0px)",
+          borderColor: scrolled ? "rgba(184, 149, 90, 0.32)" : "transparent",
+          duration: reducedMotion ? 0 : 0.25,
+          ease: "power2.out",
+          overwrite: "auto",
+        });
+      });
+
+      setScrolledStyle(window.scrollY > 50);
+
+      ScrollTrigger.create({
+        start: 50,
+        onEnter: () => setScrolledStyle(true),
+        onLeaveBack: () => setScrolledStyle(false),
+      });
+
+      return () => media.revert();
+    },
+    { scope: headerRef },
+  );
 
   return (
     <>
-      <header className="navbar-enter sticky top-0 z-50 border-b border-white/10 bg-[#11110F]/95 text-white shadow-[0_4px_24px_rgba(0,0,0,0.2)] backdrop-blur-xl">
+      <header
+        ref={headerRef}
+        className="sticky top-0 z-50 border-b border-transparent bg-[#11110F]/95 text-white shadow-[0_4px_24px_rgba(0,0,0,0.2)] backdrop-blur-none"
+      >
         <nav
           aria-label="Main navigation"
           className="mx-auto flex h-[76px] max-w-[1440px] items-center justify-between gap-4 px-5 sm:px-8 lg:h-[90px] lg:px-10 xl:px-16"
@@ -31,10 +97,10 @@ export default function Navbar() {
             href="/"
             onClick={() => setIsMenuOpen(false)}
             aria-label="Ember and Olive home"
-            className="navbar-item-enter group flex shrink-0 items-center gap-3"
-            style={{ animationDelay: "0ms" }}
+            data-navbar-item
+            className="group flex shrink-0 items-center gap-3"
           >
-            <span className="flex h-11 w-11 items-center justify-center rounded-full border border-[#B8955A]/70 bg-white/5 font-serif text-2xl italic text-[#D0B477] transition-transform duration-500 group-hover:-rotate-6 sm:h-[52px] sm:w-[52px]">
+            <span className="flex h-11 w-11 items-center justify-center rounded-full border border-[#B8955A]/70 bg-white/5 font-serif text-2xl italic text-[#D0B477] sm:h-[52px] sm:w-[52px]">
               E<span className="-ml-1">O</span>
             </span>
 
@@ -60,7 +126,8 @@ export default function Navbar() {
                   key={link.href}
                   href={link.href}
                   aria-current={isActive ? "page" : undefined}
-                  className={`navbar-item-enter group relative whitespace-nowrap py-3 text-sm font-medium tracking-wide transition-colors duration-300 xl:text-base ${
+                  data-navbar-item
+                  className={`group relative whitespace-nowrap py-3 text-sm font-medium tracking-wide transition-colors xl:text-base ${
                     isActive
                       ? "text-[#D0B477]"
                       : "text-white/80 hover:text-[#D0B477]"
@@ -70,7 +137,7 @@ export default function Navbar() {
                   {link.name}
 
                   <span
-                    className={`absolute bottom-1 left-0 h-px bg-[#D0B477] transition-all duration-300 ${
+                    className={`absolute bottom-1 left-0 h-px bg-[#D0B477] transition-[width] duration-300 ${
                       isActive ? "w-full" : "w-0 group-hover:w-full"
                     }`}
                   />
@@ -81,14 +148,11 @@ export default function Navbar() {
 
           <Link
             href="/reservations"
-            className="navbar-item-enter group hidden items-center gap-2 border border-[#B8955A] bg-[#B8955A] px-4 py-3 text-sm font-semibold text-[#11110F] transition-colors duration-300 hover:border-[#D0B477] hover:bg-[#D0B477] lg:inline-flex xl:px-6"
-            style={{ animationDelay: "550ms" }}
+            data-navbar-item
+            className="group hidden items-center gap-2 border border-[#B8955A] bg-[#B8955A] px-4 py-3 text-sm font-semibold text-[#11110F] transition-colors hover:border-[#D0B477] hover:bg-[#D0B477] lg:inline-flex xl:px-6"
           >
             Reserve a Table
-            <FiArrowUpRight
-              size={18}
-              className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
-            />
+            <FiArrowUpRight size={18} aria-hidden="true" />
           </Link>
 
           <button

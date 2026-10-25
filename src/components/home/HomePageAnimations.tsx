@@ -1,6 +1,8 @@
 "use client";
 
-import { useEffect, type ReactNode } from "react";
+import { useRef, type ReactNode } from "react";
+import { useGSAP } from "@gsap/react";
+import { gsap, ScrollTrigger } from "@/lib/gsap";
 
 type HomePageAnimationsProps = {
   children: ReactNode;
@@ -9,39 +11,357 @@ type HomePageAnimationsProps = {
 export default function HomePageAnimations({
   children,
 }: HomePageAnimationsProps) {
-  useEffect(() => {
-    const root = document.querySelector<HTMLElement>(
-      "[data-home-animation-root]",
-    );
+  const rootRef = useRef<HTMLDivElement>(null);
 
-    if (!root) return;
+  useGSAP(
+    (_, contextSafe) => {
+      const root = rootRef.current;
 
-    const items = root.querySelectorAll<HTMLElement>("[data-hero-item]");
+      if (!root || !contextSafe) return;
 
-    const visual = root.querySelector<HTMLElement>(".hero-visual");
-
-    const reducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-
-    if (reducedMotion) return;
-
-    items.forEach((item, index) => {
-      item.style.setProperty("--hero-delay", `${index * 120}ms`);
-      item.classList.add("hero-item-animated");
-    });
-
-    visual?.classList.add("hero-visual-animated");
-
-    return () => {
-      items.forEach((item) => {
-        item.classList.remove("hero-item-animated");
-        item.style.removeProperty("--hero-delay");
+      const media = gsap.matchMedia();
+      const refreshFrame = requestAnimationFrame(() => {
+        ScrollTrigger.refresh();
       });
 
-      visual?.classList.remove("hero-visual-animated");
-    };
-  }, []);
+      media.add("(prefers-reduced-motion: no-preference)", () => {
+        const heroEyebrow = root.querySelector<HTMLElement>(
+          "[data-hero-eyebrow]",
+        );
+        const heroWords = root.querySelectorAll<HTMLElement>("[data-hero-word]");
+        const waiting = root.querySelector<HTMLElement>("[data-hero-waiting]");
+        const heroDetails =
+          root.querySelectorAll<HTMLElement>("[data-hero-detail]");
+        const heroVisual = root.querySelector<HTMLElement>("[data-hero-visual]");
+        const heroImage = root.querySelector<HTMLElement>("[data-hero-image]");
+        const dishCard = root.querySelector<HTMLElement>("[data-gsap-float]");
 
-  return <div data-home-animation-root>{children}</div>;
+        const heroTimeline = gsap.timeline({ delay: 0.1 });
+
+        if (heroEyebrow) {
+          heroTimeline.from(heroEyebrow, {
+            autoAlpha: 0,
+            y: 18,
+            duration: 0.55,
+            ease: "power3.out",
+          });
+        }
+
+        if (heroWords.length) {
+          heroTimeline.from(
+            heroWords,
+            {
+              autoAlpha: 0,
+              yPercent: 110,
+              duration: 0.8,
+              stagger: 0.07,
+              ease: "power3.out",
+            },
+            "-=0.15",
+          );
+        }
+
+        if (waiting) {
+          heroTimeline.from(
+            waiting,
+            {
+              autoAlpha: 0,
+              y: 36,
+              duration: 0.75,
+              ease: "power3.out",
+            },
+            ">+=0.12",
+          );
+        }
+
+        if (heroDetails.length) {
+          heroTimeline.from(
+            heroDetails,
+            {
+              autoAlpha: 0,
+              y: 18,
+              duration: 0.55,
+              stagger: 0.1,
+              ease: "power3.out",
+            },
+            "-=0.2",
+          );
+        }
+
+        if (heroVisual) {
+          heroTimeline.fromTo(
+            heroVisual,
+            {
+              autoAlpha: 0,
+              x: 36,
+            },
+            {
+              autoAlpha: 1,
+              x: 0,
+              duration: 0.9,
+              ease: "power3.out",
+              immediateRender: false,
+            },
+            ">-=0.12",
+          );
+        }
+
+        if (heroImage) {
+          gsap.from(heroImage, {
+            scale: 1.12,
+            duration: 1.4,
+            ease: "power2.out",
+            delay: 0.2,
+          });
+          gsap.to(heroImage, {
+            yPercent: -8,
+            ease: "none",
+            scrollTrigger: {
+              trigger: heroVisual,
+              start: "top top",
+              end: "bottom top",
+              scrub: true,
+            },
+          });
+        }
+
+        if (dishCard) {
+          gsap.to(dishCard, {
+            y: -6,
+            duration: 2.8,
+            ease: "sine.inOut",
+            repeat: -1,
+            yoyo: true,
+          });
+        }
+
+        root.querySelectorAll<HTMLElement>("[data-gsap-reveal]").forEach(
+          (element) => {
+            if (element.querySelector("[data-gsap-card]")) return;
+
+            gsap.fromTo(
+              element,
+              { autoAlpha: 0, y: 22 },
+              {
+                autoAlpha: 1,
+                y: 0,
+                duration: 0.7,
+                ease: "power3.out",
+                immediateRender: false,
+                scrollTrigger: {
+                  trigger: element,
+                  start: "top 86%",
+                  once: true,
+                },
+              },
+            );
+          },
+        );
+
+        root
+          .querySelectorAll<HTMLElement>("[data-gsap-card-group]")
+          .forEach((group) => {
+            const cards =
+              group.querySelectorAll<HTMLElement>("[data-gsap-card]");
+
+            if (!cards.length) return;
+
+            gsap.fromTo(
+              cards,
+              { autoAlpha: 0, y: 26 },
+              {
+                autoAlpha: 1,
+                y: 0,
+                duration: 0.65,
+                stagger: 0.12,
+                ease: "power3.out",
+                immediateRender: false,
+                scrollTrigger: {
+                  trigger: group,
+                  start: "top 84%",
+                  once: true,
+                },
+              },
+            );
+          });
+
+        const philosophyImage = root.querySelector<HTMLElement>(
+          "[data-philosophy-image]",
+        );
+        if (philosophyImage) {
+          gsap.fromTo(
+            philosophyImage,
+            { clipPath: "inset(0 100% 0 0)" },
+            {
+              clipPath: "inset(0 0% 0 0)",
+              duration: 1,
+              ease: "power3.inOut",
+              immediateRender: false,
+              scrollTrigger: {
+                trigger: philosophyImage,
+                start: "top 82%",
+                once: true,
+              },
+            },
+          );
+        }
+
+        const quoteBorder = root.querySelector<HTMLElement>(
+          "[data-philosophy-quote-border]",
+        );
+        if (quoteBorder) {
+          gsap.fromTo(
+            quoteBorder,
+            { scaleY: 0 },
+            {
+              scaleY: 1,
+              duration: 0.7,
+              ease: "power3.out",
+              immediateRender: false,
+              scrollTrigger: {
+                trigger: quoteBorder,
+                start: "top 86%",
+                once: true,
+              },
+            },
+          );
+        }
+
+        root.querySelectorAll<HTMLElement>("[data-count-up]").forEach((el) => {
+          const value = Number(el.dataset.countUp);
+          if (!Number.isFinite(value)) return;
+
+          const counter = { value };
+          const suffix = el.dataset.countSuffix ?? "";
+
+          gsap.from(counter, {
+            value: 0,
+            duration: 1.2,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: el,
+              start: "top 88%",
+              once: true,
+            },
+            onUpdate: () => {
+              el.textContent = `${Math.round(counter.value)}${suffix}`;
+            },
+          });
+        });
+
+        const animateHover = (
+          target: HTMLElement,
+          entering: boolean,
+          relatedTarget: Node | null,
+        ) => {
+          let current: HTMLElement | null = target;
+
+          while (current && root.contains(current)) {
+            if (!(relatedTarget && current.contains(relatedTarget))) {
+              if (current.dataset.gsapHover === "space-action") {
+                const arrow = current.querySelector("[data-space-arrow]");
+                if (arrow) {
+                  gsap.to(arrow, {
+                    x: entering ? 4 : 0,
+                    duration: 0.25,
+                    ease: "power2.out",
+                    overwrite: "auto",
+                  });
+                }
+              } else {
+                const hoverVars: gsap.TweenVars = {
+                  y: entering
+                    ? current.dataset.gsapHover === "card"
+                      ? -4
+                      : -2
+                    : 0,
+                  duration: entering ? 0.28 : 0.3,
+                  ease: "power2.out",
+                  overwrite: "auto",
+                };
+
+                if (!current.hasAttribute("data-menu-add")) {
+                  hoverVars.scale = entering
+                    ? current.dataset.gsapHover === "image"
+                      ? 1.06
+                      : current.dataset.gsapHover === "button"
+                        ? 1.015
+                        : 1
+                    : 1;
+                }
+
+                gsap.to(current, hoverVars);
+              }
+            }
+
+            current =
+              current.parentElement?.closest<HTMLElement>(
+                "[data-gsap-hover]",
+              ) ?? null;
+          }
+        };
+
+        const onPointerOver = contextSafe((event: PointerEvent) => {
+          const eventTarget =
+            event.target instanceof Element ? event.target : null;
+          const target = eventTarget?.closest<HTMLElement>("[data-gsap-hover]");
+          const relatedTarget =
+            event.relatedTarget instanceof Node ? event.relatedTarget : null;
+
+          if (target && root.contains(target)) {
+            animateHover(target, true, relatedTarget);
+          }
+        });
+
+        const onPointerOut = contextSafe((event: PointerEvent) => {
+          const eventTarget =
+            event.target instanceof Element ? event.target : null;
+          const target = eventTarget?.closest<HTMLElement>("[data-gsap-hover]");
+          const relatedTarget =
+            event.relatedTarget instanceof Node ? event.relatedTarget : null;
+
+          if (target && root.contains(target)) {
+            animateHover(target, false, relatedTarget);
+          }
+        });
+
+        const onClick = contextSafe((event: MouseEvent) => {
+          const eventTarget =
+            event.target instanceof Element ? event.target : null;
+          const button = eventTarget?.closest<HTMLElement>("[data-menu-add]");
+
+          if (!button || !root.contains(button)) return;
+
+          gsap.from(button, {
+            scale: 0.96,
+            duration: 0.2,
+            ease: "power2.out",
+            overwrite: "auto",
+          });
+        });
+
+        root.addEventListener("pointerover", onPointerOver);
+        root.addEventListener("pointerout", onPointerOut);
+        root.addEventListener("click", onClick);
+
+        return () => {
+          root.removeEventListener("pointerover", onPointerOver);
+          root.removeEventListener("pointerout", onPointerOut);
+          root.removeEventListener("click", onClick);
+        };
+      });
+
+      return () => {
+        cancelAnimationFrame(refreshFrame);
+        media.revert();
+      };
+    },
+    { scope: rootRef },
+  );
+
+  return (
+    <div ref={rootRef} data-home-animation-root>
+      {children}
+    </div>
+  );
 }

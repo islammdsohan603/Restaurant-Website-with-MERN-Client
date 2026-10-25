@@ -13,7 +13,7 @@ export default function GsapButton({
   children,
 }: GsapButtonProps) {
   const baseClasses =
-    "group inline-flex min-h-12 items-center justify-center gap-2.5 border px-5 py-3 text-sm font-semibold transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#D0B477]";
+    "group inline-flex min-h-12 items-center justify-center gap-2.5 border px-5 py-3 text-sm font-semibold transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#D0B477]";
 
   const variantClasses =
     variant === "primary"
@@ -21,7 +21,11 @@ export default function GsapButton({
       : "border-white/20 bg-white/[0.03] text-[#F5F0E8] hover:border-[#B8955A] hover:bg-white/[0.08]";
 
   return (
-    <Link href={href} className={`${baseClasses} ${variantClasses}`}>
+    <Link
+      href={href}
+      data-gsap-hover="button"
+      className={`${baseClasses} ${variantClasses}`}
+    >
       {children}
     </Link>
   );

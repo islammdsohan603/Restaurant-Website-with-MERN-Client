@@ -1,3 +1,4 @@
+
 import Image from "next/image";
 import WinePairingCard from "./WinePairingCard";
 import { winePairing } from "../../db/PhilosophyData";
@@ -6,12 +7,16 @@ export default function PhilosophyImage() {
   return (
     <div className="group relative w-full">
       {/* Main image */}
-      <div className="relative aspect-[1.18/1] w-full overflow-hidden rounded-2xl border border-[#B8955A]/20 bg-[#201F1C] sm:aspect-[1.3/1] lg:aspect-[1.18/1] xl:aspect-[1.25/1]">
+      <div
+        data-philosophy-image
+        className="relative aspect-[1.18/1] w-full overflow-hidden rounded-2xl border border-[#B8955A]/20 bg-[#201F1C] sm:aspect-[1.3/1] lg:aspect-[1.18/1] xl:aspect-[1.25/1]"
+      >
         <Image
           src="/images/chef-philosophy.png"
           alt={winePairing.imageAlt}
           fill
           sizes="(max-width: 1023px) 100vw, (max-width: 1440px) 50vw, 640px"
+          data-gsap-hover="image"
           className="object-cover object-center transition-transform duration-1000 ease-out group-hover:scale-[1.04]"
         />
 

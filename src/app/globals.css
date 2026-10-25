@@ -8,7 +8,6 @@
 
 html {
   min-height: 100%;
-  scroll-behavior: smooth;
   scroll-padding-top: 100px;
 }
 
@@ -24,134 +23,9 @@ body {
   color: #11110f;
 }
 
-/* Navbar entrance */
-.navbar-enter {
-  animation: navbar-enter 650ms ease-out both;
-}
-
-.navbar-item-enter {
-  animation: navbar-item-enter 650ms ease-out both;
-}
-
-@keyframes navbar-enter {
-  from {
-    opacity: 0;
-    transform: translateY(-14px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes navbar-item-enter {
-  from {
-    opacity: 0;
-    transform: translateY(-8px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Hero entrance */
-.hero-item-animated {
-  animation: hero-item-enter 750ms cubic-bezier(0.22, 1, 0.36, 1)
-    var(--hero-delay, 0ms) both;
-}
-
-.hero-visual-animated {
-  animation: hero-visual-enter 1000ms cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-@keyframes hero-item-enter {
-  from {
-    opacity: 0;
-    transform: translateX(-28px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes hero-visual-enter {
-  from {
-    opacity: 0;
-    transform: translateX(28px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-/* Floating signature dish card */
-.dish-card {
-  animation: dish-card-float 2.8s ease-in-out infinite;
-}
-
-@keyframes dish-card-float {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-
-  50% {
-    transform: translateY(-7px);
-  }
-}
-
-/* Space card scroll reveal */
-.space-card-reveal {
-  opacity: 0;
-  transform: translateY(24px);
-}
-
-.space-card-reveal.is-visible {
-  animation: space-card-reveal 700ms cubic-bezier(0.22, 1, 0.36, 1)
-    var(--card-delay, 0ms) both;
-}
-
-@keyframes space-card-reveal {
-  from {
-    opacity: 0;
-    transform: translateY(24px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
 /* Accessible keyboard focus */
 a:focus-visible,
 button:focus-visible {
   outline: 2px solid #d6b77d;
   outline-offset: 4px;
-}
-
-/* Respect reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-
-  .navbar-enter,
-  .navbar-item-enter,
-  .hero-item-animated,
-  .hero-visual-animated,
-  .dish-card,
-  .space-card-reveal,
-  .space-card-reveal.is-visible {
-    animation: none !important;
-    opacity: 1;
-    transform: none;
-  }
 }
