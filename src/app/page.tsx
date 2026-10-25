@@ -6,14 +6,18 @@ import HomePageAnimations from "../components/home/HomePageAnimations";
 import ReservationSection from "../components/home/revservation/ReservationSection";
 import TestimonialsSection from "../components/home/testimonials/TestimonialsSection";
 
-export default function Home() {
+import { getTestimonials } from "@/src/components/db/TestimonialData";
+
+export default async function Home() {
+  const testimonials = await getTestimonials();
+
   return (
     <HomePageAnimations>
       <HomePage />
       <SpacesSection />
       <MenuSection />
       <ReservationSection />
-      <TestimonialsSection />
+      <TestimonialsSection testimonials={testimonials} />
       <PhilosophySection />
     </HomePageAnimations>
   );

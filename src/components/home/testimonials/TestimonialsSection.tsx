@@ -1,123 +1,90 @@
 "use client";
 
-import "./testimonials.css";
+import { useRef } from "react";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-type Testimonial = {
-  id: number;
-  name: string;
-  initials: string;
-  role: string;
-  review: string;
-  featured?: boolean;
-};
+import type { Testimonial } from "../../db/TestimonialData";
+import TestimonialCard from "./TestimonialCard";
 
-const testimonials: Testimonial[] = [
-  {
-    id: 1,
-    name: "Lord Rupert Sterling",
-    initials: "LR",
-    role: "FOOD & WINE UK · VERIFIED",
-    review:
-      "The Italian sea bass is an absolute revelation. Subtle smoke, perfect tenderness, and the Crétan olive pairing elevated it into Michelin three-star territory.",
-  },
-  {
-    id: 2,
-    name: "Claire Vance",
-    initials: "CV",
-    role: "ANNIVERSARY CELEBRATION",
-    review:
-      "Chef Arnaud Dubois has delivered London's most atmospheric dining room. The Chef's Counter felt intimate, educational, and deeply theatrical.",
-    featured: true,
-  },
-  {
-    id: 3,
-    name: "Dr. Marcus Keller",
-    initials: "MK",
-    role: "EPICUREAN SOCIETY MEMBER",
-    review:
-      "The wine curation by sommelier Matteo is immaculate. Each course's temperature, vintage, and backstory were executed without flaw.",
-  },
-  {
-    id: 4,
-    name: "Eleanor Whitmore",
-    initials: "EW",
-    role: "PRIVATE DINING GUEST",
-    review:
-      "An unforgettable evening. Every detail, from the candlelit atmosphere to the extraordinary service, felt effortlessly elegant.",
-  },
-  {
-    id: 5,
-    name: "James Harrington",
-    initials: "JH",
-    role: "RETURNING GUEST",
-    review:
-      "A remarkable restaurant with exceptional flavours. The seasonal menu makes every visit feel like an entirely new experience.",
-  },
-];
+gsap.registerPlugin(ScrollTrigger, useGSAP);
 
-function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
-  return (
-    <article
-      className={`testimonial-card ${
-        testimonial.featured ? "testimonial-card-featured" : ""
-      }`}
-    >
-      {testimonial.featured && (
-        <span className="testimonial-badge">EDITOR'S CHOICE</span>
-      )}
+export default function TestimonialsSection({
+  testimonials = [],
+}: {
+  testimonials?: Testimonial[];
+}) {
+  const sectionRef = useRef<HTMLElement>(null);
+  const items = testimonials.slice(0, 3);
 
-      <div className="testimonial-stars" aria-label="5 out of 5 stars">
-        ★★★★★
-      </div>
+  useGSAP(
+    () => {
+      const mm = gsap.matchMedia();
 
-      <blockquote className="testimonial-review">
-        "{testimonial.review}"
-      </blockquote>
-
-      <div className="testimonial-divider" />
-
-      <div className="testimonial-author">
-        <div className="testimonial-avatar">{testimonial.initials}</div>
-
-        <div className="testimonial-author-info">
-          <h3>{testimonial.name}</h3>
-          <p>{testimonial.role}</p>
-        </div>
-      </div>
-    </article>
+      mm.add("(prefers-reduced-motion: no-preference)", () => {
+        gsap
+          .timeline({
+            defaults: { ease: "power3.out" },
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: "top 80%",
+              once: true,
+            },
+          })
+          .from("[data-t-head]", {
+            autoAlpha: 0,
+            y: 24,
+            duration: 0.7,
+            stagger: 0.12,
+          })
+          .from(
+            "[data-t-card]",
+            {
+              autoAlpha: 0,
+              y: 50,
+              duration: 0.8,
+              stagger: 0.15,
+              clearProps: "transform",
+            },
+            "-=0.3",
+          );
+      });
+    },
+    { scope: sectionRef, dependencies: [items.length] },
   );
-}
 
-export default function TestimonialsSection() {
+  if (items.length === 0) return null;
+
   return (
     <section
-      className="testimonials-section"
+      ref={sectionRef}
       aria-labelledby="testimonials-heading"
+      className="relative overflow-hidden bg-[#0E0E0C] py-16 text-[#F5F0E8] sm:py-20 lg:py-24"
     >
-      <div className="testimonials-heading">
-        <span className="testimonials-eyebrow">CRITICAL ACCLAIM</span>
+      <div className="relative mx-auto max-w-[1440px] px-5 sm:px-8 lg:px-12 xl:px-16">
+        <div className="mb-12 text-center">
+          <p
+            data-t-head
+            className="mb-3 text-[10px] font-semibold uppercase tracking-[0.25em] text-[#E5C17F]"
+          >
+            Critical Acclaim
+          </p>
+          <h2
+            id="testimonials-heading"
+            data-t-head
+            className="font-serif text-3xl tracking-[-0.02em] text-[#F5F0E8] sm:text-4xl"
+          >
+            An Experience Worth Returning For
+          </h2>
+        </div>
 
-        <h2 id="testimonials-heading">An Experience Worth Returning For</h2>
-      </div>
-
-      <div className="testimonial-marquee" aria-label="Guest testimonials">
-        <div className="testimonial-track">
-          {/* First set */}
-          <div className="testimonial-group">
-            {testimonials.map((testimonial) => (
-              <TestimonialCard key={testimonial.id} testimonial={testimonial} />
-            ))}
-          </div>
-
-          {/* Duplicate set for seamless infinite animation */}
-          <div className="testimonial-group" aria-hidden="true">
-            {testimonials.map((testimonial) => (
-              <TestimonialCard
-                key={`duplicate-${testimonial.id}`}
-                testimonial={testimonial}
-              />
-            ))}
-          </div>
+        <div className="mx-auto grid max-w-[1440px] grid-cols-1 gap-5 md:grid-cols-3 lg:gap-6">
+          {items.map((item) => (
+            <div key={item.id} data-t-card className="h-full">
+              <TestimonialCard item={item} />
+            </div>
+          ))}
         </div>
       </div>
     </section>
