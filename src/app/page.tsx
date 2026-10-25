@@ -1,7 +1,6 @@
-import HomePage from "../components/home/HompePage";
 import MenuSection from "../components/home/menu/MenuSection";
 import PhilosophySection from "../components/home/philosophy/PhilosophySection";
-import SpacesSection from "../components/home/spaces/SpacessSection";
+
 import HomePageAnimations from "../components/home/HomePageAnimations";
 import ReservationSection from "../components/home/revservation/ReservationSection";
 import TestimonialsSection from "../components/home/testimonials/TestimonialsSection";
@@ -9,6 +8,8 @@ import TestimonialsSection from "../components/home/testimonials/TestimonialsSec
 import { getTestimonials } from "@/src/components/db/TestimonialData";
 import { getOffer } from "@/src/components/db/OfferData";
 import OfferBanner from "../components/home/offer/OfferBanner";
+import HomePage from "../components/home/HompePage";
+import SpacesSection from "../components/home/spaces/SpacessSection";
 
 export default async function Home() {
   const testimonials = await getTestimonials();
